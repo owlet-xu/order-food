@@ -1,0 +1,13 @@
+group ' com.orderfood.springboot.seed'
+archivesBaseName = 'orderfood-bz1-webapi'
+apply from: "../scripts/gradle/publish.gradle"
+apply from: "../scripts/gradle/jacoco.gradle"
+dependencies{
+    // 依赖模块
+    compile project(":orderfood-common")
+    compile project(":orderfood-bz1-contract")
+    compile project(":orderfood-bz1-service")
+    test {
+        useTestNG()
+    }
+}
