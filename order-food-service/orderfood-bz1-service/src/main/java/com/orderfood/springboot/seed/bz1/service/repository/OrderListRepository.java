@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * JPA的方法应用
- * Created by yangxuechao on 2018/7/9.
+ * Created by xuguoyuan on 2018/7/9.
  */
 public interface OrderListRepository extends JpaRepository<OrderListEntity,String>,JpaSpecificationExecutor<OrderListEntity> {
 

@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Created by yangxuechao on 2018/7/5.
+ * Created by xuguoyuan on 2018/7/5.
  */
 @ApiModel
 public class OrderUserInfo {

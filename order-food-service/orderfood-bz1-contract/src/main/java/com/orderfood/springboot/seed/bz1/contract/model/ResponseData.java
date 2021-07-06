@@ -2,7 +2,7 @@ package com.orderfood.springboot.seed.bz1.contract.model;
 
 /**
  * 整体封装的返回对象，与前端协商的
- * Created by yangxuechao on 2018/7/11.
+ * Created by xuguoyuan on 2018/7/11.
  */
 public class ResponseData {
     /**

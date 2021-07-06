@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 /**
  * 封装登陆的对象
- * Created by yangxuechao on 2018/7/5.
+ * Created by xuguoyuan on 2018/7/5.
  */
 @ApiModel
 public class LoginInfo {

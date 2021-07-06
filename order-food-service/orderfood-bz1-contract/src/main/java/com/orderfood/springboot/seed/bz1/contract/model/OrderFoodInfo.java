@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 对应菜品的
- * Created by yangxuechao on 2018/7/10.
+ * Created by xuguoyuan on 2018/7/10.
  */
 @ApiModel
 public class OrderFoodInfo {

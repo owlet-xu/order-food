@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 /**
- * Created by yangxuechao on 2018/7/9.
+ * Created by xuguoyuan on 2018/7/9.
  */
 public interface OrderMeanlistRepository extends CrudRepository<OrderMeanListEntity,String> {
     /**

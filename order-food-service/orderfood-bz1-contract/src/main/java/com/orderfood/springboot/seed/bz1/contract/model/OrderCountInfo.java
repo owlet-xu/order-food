@@ -3,7 +3,7 @@ package com.orderfood.springboot.seed.bz1.contract.model;
 import io.swagger.annotations.ApiModel;
 
 /**
- * Created by yangxuechao on 2018/7/18.
+ * Created by xuguoyuan on 2018/7/18.
  */
 @ApiModel
 public class OrderCountInfo {

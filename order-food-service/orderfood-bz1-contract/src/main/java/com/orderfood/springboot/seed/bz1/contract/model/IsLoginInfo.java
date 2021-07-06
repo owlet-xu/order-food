@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 /**
- * Created by yangxuechao on 2018/7/6.
+ * Created by xuguoyuan on 2018/7/6.
  */
 @ApiModel
 public class IsLoginInfo {

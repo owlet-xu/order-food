@@ -49,7 +49,7 @@ public class LimitIPRequestAspect {
      *
      * @param joinPoint JoinPoint
      */
-    @Before("execution(*  com.orderfood.com.springboot.seed.bz1.controller.*.*(..)) && @annotation(com.orderfood.springboot.seed.common.qiqi.LimitIPRequestAnnotation)")
+    @Before("execution(*  com.orderfood.springboot.seed.bz1.controller.*.*(..)) && @annotation(com.orderfood.springboot.seed.common.qiqi.LimitIPRequestAnnotation)")
     public void requestLimit(JoinPoint joinPoint) {
 
         // 获取HttpRequest

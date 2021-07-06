@@ -1,4 +1,4 @@
-package com.orderfood.com.springboot.seed.bz1.controller;
+package com.orderfood.springboot.seed.bz1.controller;
 
 import com.orderfood.springboot.seed.bz1.contract.model.*;
 import com.orderfood.springboot.seed.bz1.contract.service.OrderListService;
@@ -15,18 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by yangxuechao on 2018/7/9.
+ * Created by xuguoyuan on 2018/7/9.
  */
 @RestController
 @RequestMapping(value = "/api/v1", produces = "application/json")
 @Api(value = "/api/v1", description = "AppMean Api")
 public class OrderMeanListController {
 
-
     @Autowired
     OrderListService orderListService;
-
-
 
     /**
      * 这里是根据订单字表的foodId查询订单表里面的id,最后关联评价表里面的评价信息

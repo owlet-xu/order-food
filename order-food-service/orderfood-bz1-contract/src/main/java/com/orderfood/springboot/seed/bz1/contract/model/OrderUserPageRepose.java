@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 用户信息返回对象
- * Created by yangxuechao on 2018/7/12.
+ * Created by xuguoyuan on 2018/7/12.
  */
 public class OrderUserPageRepose {
     private int pageNum;

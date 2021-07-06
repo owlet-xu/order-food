@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 个人信息查询的分页
- * Created by yangxuechao on 2018/7/12.
+ * Created by xuguoyuan on 2018/7/12.
  */
 public class OrderUserPageRequest implements Serializable {
     /**

@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import java.util.Map;
 
 /**
- * Created by yangxuechao on 2018/7/18.
+ * Created by xuguoyuan on 2018/7/18.
  */
 @ApiModel
 public class CountTodayInfo {

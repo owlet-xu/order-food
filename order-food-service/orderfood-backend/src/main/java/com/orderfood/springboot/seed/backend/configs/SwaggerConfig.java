@@ -1,4 +1,4 @@
-package  com.orderfood.springboot.seed.backend.configs;
+package com.orderfood.springboot.seed.backend.configs;
 
 import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;
@@ -40,8 +40,8 @@ public class SwaggerConfig {
     //用来创建该API的基本信息，这些信息会展示在文档页面当中
     private ApiInfo aipInfo() {
         return  new ApiInfoBuilder()
-                .title("java-service-seed")
-                .description("java-service-seed API helper")
+                .title("order-food-service")
+                .description("order-food-service API helper")
                 .build();
     }
 

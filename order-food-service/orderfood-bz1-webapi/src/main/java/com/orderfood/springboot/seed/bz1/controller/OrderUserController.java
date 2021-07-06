@@ -1,4 +1,4 @@
-package com.orderfood.com.springboot.seed.bz1.controller;
+package com.orderfood.springboot.seed.bz1.controller;
 
 import com.orderfood.springboot.seed.bz1.contract.model.*;
 import com.orderfood.springboot.seed.bz1.contract.service.OrderUserService;
@@ -15,20 +15,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Created by yangxuechao on 2018/7/5.
+ * Created by xuguoyuan on 2018/7/5.
  */
 @RestController
 @RequestMapping(value = "/api/v1", produces = "application/json")
 @Api(value = "/api/v1", description = "AppUser Api")
 public class OrderUserController {
 
-
     @Autowired
     OrderUserService orderUserService;
 
     @Autowired
     private MessageSource messageSource;
-
 
     /**
      * 注册新用户,需要校验,根据电话,邮件校验

@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 /**
- * Created by yangxuechao on 2018/7/9.
+ * Created by xuguoyuan on 2018/7/9.
  */
 @Mapper(componentModel = "spring")
 public interface OrderMeanListMapper {

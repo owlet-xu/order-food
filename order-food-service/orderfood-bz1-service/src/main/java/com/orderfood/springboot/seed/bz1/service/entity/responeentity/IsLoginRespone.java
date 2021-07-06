@@ -3,7 +3,7 @@ package com.orderfood.springboot.seed.bz1.service.entity.responeentity;
 import com.orderfood.springboot.seed.bz1.contract.model.IsLoginInfo;
 
 /**
- * Created by yangxuechao on 2018/7/6.
+ * Created by xuguoyuan on 2018/7/6.
  */
 public class IsLoginRespone {
     private Boolean status;

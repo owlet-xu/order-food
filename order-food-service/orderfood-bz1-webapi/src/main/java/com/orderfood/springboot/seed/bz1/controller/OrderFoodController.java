@@ -1,4 +1,4 @@
-package com.orderfood.com.springboot.seed.bz1.controller;
+package com.orderfood.springboot.seed.bz1.controller;
 
 import com.orderfood.springboot.seed.bz1.contract.model.*;
 import com.orderfood.springboot.seed.bz1.contract.service.OrderFoodService;
@@ -17,12 +17,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by yangxuechao on 2018/7/10.
+ * Created by xuguoyuan on 2018/7/10.
  */
 @RestController
 @RequestMapping(value = "/api/v1", produces = "application/json")
 @Api(value = "/api/v1", description = "AppMean Api")
-
 public class OrderFoodController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

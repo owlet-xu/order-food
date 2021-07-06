@@ -4,7 +4,7 @@ import com.orderfood.springboot.seed.bz1.contract.model.LoginInfo;
 import com.orderfood.springboot.seed.bz1.contract.model.OrderUserInfo;
 
 /**
- * Created by yangxuechao on 2018/7/3.
+ * Created by xuguoyuan on 2018/7/3.
  */
 public class UserinfoRespone {
     private Boolean status;

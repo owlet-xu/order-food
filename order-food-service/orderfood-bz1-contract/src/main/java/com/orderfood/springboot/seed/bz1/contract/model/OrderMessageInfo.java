@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import java.util.List;
 
 /**
- * Created by yangxuechao on 2018/7/17.
+ * Created by xuguoyuan on 2018/7/17.
  */
 @ApiModel
 public class OrderMessageInfo {

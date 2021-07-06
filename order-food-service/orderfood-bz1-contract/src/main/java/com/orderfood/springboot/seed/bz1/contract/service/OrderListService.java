@@ -5,7 +5,7 @@ import com.orderfood.springboot.seed.bz1.contract.model.*;
 import java.util.List;
 
 /**
- * Created by yangxuechao on 2018/7/9.
+ * Created by xuguoyuan on 2018/7/9.
  */
 public interface OrderListService {
 

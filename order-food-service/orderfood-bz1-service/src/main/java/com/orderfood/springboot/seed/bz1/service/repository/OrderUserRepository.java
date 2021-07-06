@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
 /**
- * Created by yangxuechao on 2018/7/5.
+ * Created by xuguoyuan on 2018/7/5.
  */
 public interface OrderUserRepository extends JpaRepository<OrderUserEntity,String>,JpaSpecificationExecutor<OrderUserEntity> {
     /**

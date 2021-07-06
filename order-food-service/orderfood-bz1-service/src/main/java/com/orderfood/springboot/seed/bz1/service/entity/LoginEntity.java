@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 /**
- * Created by yangxuechao on 2018/7/5.
+ * Created by xuguoyuan on 2018/7/5.
  */
 @Entity
 @Table(name = "os_user", schema= "order_food")

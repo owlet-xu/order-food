@@ -3,7 +3,7 @@ package com.orderfood.springboot.seed.bz1.contract.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Created by yangxuechao on 2018/7/10.
+ * Created by xuguoyuan on 2018/7/10.
  */
 @JsonIgnoreProperties({"bytes"})
 public class FileMeta {

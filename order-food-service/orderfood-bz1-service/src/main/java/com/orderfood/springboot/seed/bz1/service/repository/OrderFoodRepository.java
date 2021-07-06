@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 /**
- * Created by yangxuechao on 2018/7/10.
+ * Created by xuguoyuan on 2018/7/10.
  */
 public interface OrderFoodRepository  extends JpaRepository<OrderFoodEntity,String>,JpaSpecificationExecutor<OrderFoodEntity> {
     /**

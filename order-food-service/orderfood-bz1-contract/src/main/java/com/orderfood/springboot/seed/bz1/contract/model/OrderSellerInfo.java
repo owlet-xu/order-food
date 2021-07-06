@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.Id;
 
 /**
- * Created by yangxuechao on 2018/7/17.
+ * Created by xuguoyuan on 2018/7/17.
  */
 @ApiModel
 public class OrderSellerInfo {
