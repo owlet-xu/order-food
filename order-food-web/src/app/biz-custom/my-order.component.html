@@ -1,0 +1,102 @@
+<div class="my-order my-table">
+  <form nz-form [formGroup]="validateForm" style="padding: 10px;">
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="control.domType === 'input'?4:5" *ngFor="let control of controlArray" [style.display]="control.show?'block':'none'">
+        <nz-form-item nzFlex *ngIf="control.domType === 'input'">
+          <nz-form-label [nzFor]="'field'+control.index">{{ control.title }}</nz-form-label>
+          <nz-form-control>
+            <input nz-input [placeholder]="control.placeholder" [type]="control.type" [formControlName]="'field'+control.index" [attr.id]="'field'+control.index">
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="control.domType === 'datetime'">
+          <nz-form-label [nzSm]="8" [nzXs]="24">{{ control.title }}</nz-form-label>
+          <nz-form-control [nzSm]="16" [nzXs]="24">
+            <nz-date-picker nzShowTime [formControlName]="'field'+control.index"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="4" style="display: block">
+        <button nz-button [nzType]="'primary'" (click)="loadData()">搜索</button>&nbsp;&nbsp;
+        <button nz-button (click)="resetForm()">清除</button>
+      </div>
+    </div>
+  </form>
+  <nz-table #nestedTable [nzData]="nestedTableData"  nzShowSizeChanger [nzFrontPagination]="false" [nzLoading]="loading" [nzTotal]="total"
+  [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="loadData()" (nzPageSizeChange)="loadData()">
+    <thead>
+      <tr>
+        <th nzShowExpand></th>
+        <th>订单号</th>
+        <th>客户姓名</th>
+        <th>客户手机</th>
+        <th>客户地址</th>
+        <th>订单总价(元)</th>
+        <th>订单状态</th>
+        <th>下单时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template ngFor let-data [ngForOf]="nestedTable.data">
+        <tr>
+          <td nzShowExpand [(nzExpand)]="data.expand"></td>
+          <td>
+            <a>{{data.orderNu}}</a>
+          </td>
+          <td>{{data.orderName}}</td>
+          <td>{{data.orderPhone}}</td>
+          <td>{{data.orderAddress}}</td>
+          <td>{{data.totalPrice}}</td>
+          <td>
+            <nz-badge *ngIf="data.status == '0'" [nzStatus]="'error'" [nzText]="getStatusName(data.status)"></nz-badge>
+            <nz-badge *ngIf="data.status == '1'" [nzStatus]="'warning'" [nzText]="getStatusName(data.status)"></nz-badge>
+            <nz-badge *ngIf="data.status == '2'" [nzStatus]="'success'" [nzText]="getStatusName(data.status)"></nz-badge>
+            <nz-badge *ngIf="data.status == '3'" [nzStatus]="'default'" [nzText]="getStatusName(data.status)"></nz-badge>
+          </td>
+          <td>{{data.createTime}}</td>
+          <td>
+            <nz-dropdown [nzPlacement]="'bottomCenter'" [nzClickHide]="false" *ngIf="data.status != '0' && data.status != '3'">
+              <a nz-dropdown>
+                操作
+                <i class="anticon anticon-down"></i>
+              </a>
+              <ul nz-menu>
+                <li *ngIf="data.status == '1'" nz-menu-item (click)="showDeleteConfirm(data.id, data.orderNu)">取消</li>
+                <li *ngIf="data.status == '2'" nz-menu-item (click)="showEvaluate(data.id, data.orderNu)">评价</li>
+              </ul>
+            </nz-dropdown>
+          </td>
+        </tr>
+        <tr [nzExpand]="data.expand">
+          <td></td>
+          <td colspan="7">
+            <nz-table #innerTable [nzData]="data.orderDetail" nzSize="middle" [nzShowPagination]="false">
+              <thead>
+                <tr>
+                  <th>菜品名称</th>
+                  <th>菜品价格</th>
+                  <th>菜品数量</th>
+                  <th>客户备注</th>
+                  <th>商家备注</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let detial of data.orderDetail;let i = index">
+                  <td>{{detial.foodName}}</td>
+                  <td>{{detial.price}}</td>
+                  <td>{{detial.count}}</td>
+                  <td *ngIf="i == 0" [rowSpan]="data.orderDetail.length">{{data.orderRemark}}</td>
+                  <td *ngIf="i == 0" [rowSpan]="data.orderDetail.length">{{data.sellerRemark}}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </nz-table>
+</div>
+<nz-modal [(nzVisible)]="isShowEvaluate" [nzTitle]="evaluateTitle" (nzOnCancel)="evaluateDo(false)" (nzOnOk)="evaluateDo(true)">
+  <div style="margin-bottom: 10px;">评价：<nz-rate [(ngModel)]="evaluateStars"></nz-rate></div>
+  <textarea nz-input rows="3" [(ngModel)]="evaluateContent" placeholder="请留下对我们的建议^__^"></textarea>
+</nz-modal>

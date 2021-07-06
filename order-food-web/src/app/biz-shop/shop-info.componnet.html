@@ -1,0 +1,211 @@
+<div class="user-info-cart">
+  <div style="display: flex;">
+    <div style="flex: 0 0 100px;">
+      <div style="font-size: 20px;font-weight: bold;margin: 10px;">商家信息</div>
+      <div style="margin: 10px 10px 20px 10px;">账户设置</div>
+    </div>
+    <div style="flex: 1 1 auto;text-align: right;">
+      <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)" style="margin-top: 30px;margin-right: 27px;">编辑信息</button>
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">头像</div>
+    <div class="user-info-item-body">
+      <nz-avatar [nzSrc]="baseImgUrl + userData.headImg" nzSize="large" class="mr-sm"></nz-avatar>
+    </div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">商铺名</div>
+    <div class="user-info-item-body">{{ userData.name }}</div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">性别</div>
+    <div class="user-info-item-body">{{ getSexName(userData.sex) }}</div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">年龄</div>
+    <div class="user-info-item-body">{{ userData.age }}</div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">手机</div>
+    <div class="user-info-item-body">{{ userData.phone }}</div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">邮箱</div>
+    <div class="user-info-item-body">{{ userData.email }}</div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">商家地址</div>
+    <div class="user-info-item-body">{{ userData.address }}</div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">兴趣</div>
+    <div class="user-info-item-body">{{ userData.interest }}</div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+  <div class="user-info-item">
+    <div class="user-info-item-head">密码</div>
+    <div class="user-info-item-body">.........</div>
+    <div class="user-info-item-foot">
+      <!-- <button nz-button [nzType]="'primary'" (click)="showOrCloseModel(true)">修改</button> -->
+    </div>
+  </div>
+</div>
+<nz-modal [(nzVisible)]="isShowEdit" nzTitle="修改用户信息" (nzOnCancel)="showOrCloseModel(false)" (nzOnOk)="editUserInfo()">
+  <form nz-form [formGroup]="registerForm" class="register-form">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">头像</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <div class="clearfix">
+          <nz-upload [nzAction]="imgUploadUrl" nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1"
+            [nzPreview]="handlePreview" (nzChange)="uploadChange($event)">
+            <i class="anticon anticon-plus"></i>
+            <div class="ant-upload-text">Upload</div>
+          </nz-upload>
+          <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
+            <ng-template #modalContent>
+              <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+            </ng-template>
+          </nz-modal>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="username">
+        商铺名
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-group>
+          <input type="text" nz-input formControlName="username" placeholder="请输入用户名" [(ngModel)]="userData.name" />
+        </nz-input-group>
+        <nz-form-explain *ngIf="registerForm.get('username').dirty && registerForm.get('username').errors">
+          <ng-container *ngIf="registerForm.get('username').hasError('required')">请输入用户名</ng-container>
+          <ng-container *ngIf="registerForm.get('username').hasError('minlength')">用户名至少2位有效字符</ng-container>
+          <ng-container *ngIf="registerForm.get('username').hasError('maxlength')">用户名不能超过20个字符</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password">
+        密码
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-group>
+          <input type="password" nz-input formControlName="password" placeholder="请输入密码" [(ngModel)]="userData.passWord">
+        </nz-input-group>
+        <nz-form-explain *ngIf="registerForm.get('password').dirty && registerForm.get('password').errors">
+          <ng-container *ngIf="registerForm.get('password').hasError('required')">请输入密码</ng-container>
+          <ng-container *ngIf="registerForm.get('password').hasError('minlength')">密码至少为6位</ng-container>
+          <ng-container *ngIf="registerForm.get('password').hasError('maxlength')">密码太长</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password2">
+        确认密码
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-group>
+          <input type="password" nz-input formControlName="password2" placeholder="请输入密码" [(ngModel)]="confirmPass">
+        </nz-input-group>
+        <nz-form-explain *ngIf="registerForm.get('password2').dirty && registerForm.get('password2').errors">
+          <ng-container *ngIf="registerForm.get('password2').hasError('required')">请确认密码</ng-container>
+          <ng-container *ngIf="registerForm.get('password2').hasError('confirm')">两次密码不一致</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="phone">
+        手机号
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-group>
+          <input type="number" nz-input formControlName="phone" placeholder="请输入密码" [(ngModel)]="userData.phone">
+        </nz-input-group>
+        <nz-form-explain *ngIf="registerForm.get('phone').dirty && registerForm.get('phone').errors">
+          <ng-container *ngIf="registerForm.get('phone').hasError('required')">请输入手机号</ng-container>
+          <ng-container *ngIf="registerForm.get('phone').hasError('phoneFormateError')">手机号格式不正确</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">
+        邮箱
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-group>
+          <input type="text" nz-input formControlName="email" placeholder="请输入邮箱" [(ngModel)]="userData.email">
+        </nz-input-group>
+        <nz-form-explain *ngIf="registerForm.get('email').dirty && registerForm.get('email').errors">
+          <ng-container *ngIf="registerForm.get('email').hasError('required')">请输入邮箱</ng-container>
+          <ng-container *ngIf="registerForm.get('email').hasError('email')">邮箱格式不正确</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="address">
+        地址
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-group>
+          <input type="text" nz-input formControlName="address" placeholder="请输入地址" [(ngModel)]="userData.address">
+        </nz-input-group>
+        <nz-form-explain *ngIf="registerForm.get('address').dirty && registerForm.get('address').errors">
+          请输入地址
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSm="6" nzXs="24">性别</nz-form-label>
+      <nz-form-control nzSm="18" nzXs="24">
+        <nz-select formControlName="sex" nzPlaceHolder="请选择性别" [(ngModel)]="userSex">
+          <nz-option nzValue="0" nzLabel="男"></nz-option>
+          <nz-option nzValue="1" nzLabel="女"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="age">
+        年龄
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-group>
+          <input type="number" nz-input formControlName="age" placeholder="请输入年龄" [(ngModel)]="userData.age">
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="interest">
+        兴趣
+      </nz-form-label>
+      <nz-form-control [nzSm]="18" [nzXs]="24">
+        <nz-input-group>
+          <input type="text" nz-input formControlName="interest" placeholder="请输入兴趣" [(ngModel)]="userData.interest">
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

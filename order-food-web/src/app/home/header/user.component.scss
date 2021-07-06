@@ -1,0 +1,19 @@
+.item {
+  color: white;
+  padding: 5px;
+  z-index: 999;
+  margin: 10px;
+}
+.item:hover {
+  background-color: rgba($color: #ffffff, $alpha: 0.3);
+}
+.item-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+.parent {
+  height: 20px;
+}
+.item-sub-menu{
+  width: 140px;
+}

@@ -1,0 +1,36 @@
+<div class="detail clearfix" >
+  <div class="clearfix box">
+      <div class="food-detal">
+          <h2 class="detailTitle detailTitle2">菜品信息</h2>
+          <ul>
+            <li><span>菜品名称：</span>{{data?.foodName}}</li>
+            <li><span>菜品类型：</span>{{data?.foodType}}</li>
+            <li><span>菜品价格：</span>{{data?.price}}</li>
+            <li><span>优惠价格：</span>{{data?.discountPrice}}</li>
+            <li><span>菜品描叙：</span>{{data?.remarks}}</li>
+          </ul>
+          <div class="addbtn" (click)="add()">添加购物车</div>
+      </div>
+      <div class="banner">
+        <h2 class="detailTitle detailTitle1">菜品详情</h2>
+        <nz-carousel nzAutoPlay>
+            <div nzBreakpoint nz-carousel-content  *ngFor="let index of List" >
+              <div class="hot"><img [src]="baseImgUrl + index.pic" /></div>
+            </div>
+          </nz-carousel>
+      </div>
+  </div>
+    <div class="assess">
+        <h2 class="detailTitle detailTitle3">用户评价</h2>
+        <ul>
+          <li *ngFor="let item of assess">
+              <i class="top"></i><i class="right"></i><i class="bottom"></i><i class="left"></i>
+              <span class="people-img"><img [src]="baseImgUrl + item.headImg" alt=""></span>
+              <p class="people"><span>用户名：</span>{{item.evaluateName}}</p>
+              <p><span>用户评分：</span><nz-rate [ngModel]="likeNumberToInt(item.likeLevle)" nzDisabled></nz-rate></p>
+              <p class="as-text"><span>用户评价：</span> {{item.content}}</p>
+            </li>
+        </ul>
+      </div>
+</div>
+<od-shopping-cart></od-shopping-cart>

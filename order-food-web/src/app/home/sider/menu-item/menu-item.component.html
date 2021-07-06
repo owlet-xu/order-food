@@ -1,0 +1,19 @@
+<li
+  *ngIf="!menuItem.children || menuItem.children.length === 0"
+  nz-menu-item
+  [routerLink]="menuItem.url"
+  routerLinkActive="ant-menu-item-selected">
+  <span title>
+    <i *ngIf="menuItem.icon" [ngClass]="menuItem.icon"></i>
+    <span class="nav-text">{{ menuItem.title | translate }}</span>
+  </span>
+</li>
+
+<li *ngIf="menuItem.children && menuItem.children.length > 0" nz-submenu nzOpen>
+    <span title><i *ngIf="menuItem.icon" [ngClass]="menuItem.icon"></i>
+      <span  class="nav-text">{{ menuItem.title | translate }}</span>
+    </span>
+  <ul>
+    <od-menu-item *ngFor="let menuItem of menuItem.children" [menuItem]="menuItem"></od-menu-item>
+  </ul>
+</li>

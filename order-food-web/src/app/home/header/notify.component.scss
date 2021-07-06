@@ -1,0 +1,30 @@
+.item {
+  color: white;
+  padding: 5px;
+  z-index: 999;
+  margin: 10px;
+  position: relative;
+}
+.item:hover {
+  background-color: rgba($color: #ffffff, $alpha: 0.3);
+}
+.parent {
+  height: 20px;
+}
+.item-sub-menu{
+  width: auto;
+}
+.my-bell {
+  font-size: 20px;
+}
+.my-red-count {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  color: #ffffff;
+  border-radius: 10px;
+  text-align: center;
+  position: absolute;
+  top: -5px;
+  left: 16px;
+}

@@ -1,0 +1,14 @@
+/* Layout */
+h1, h2, h3, h4,h5,h6{margin:0; margin-bottom: 0; padding: 0;}
+li{list-style-type: none;}
+$header-color: #001529;
+img{width: 100%; height: auto;}
+
+.clearfix{*zoom:1;}
+.clearfix:after{content:"\20";display:block; height: 0; clear: both;}
+
+@media (max-width:992px){
+  .nav-text{ display: none;}
+}
+
+body{padding-right:0 !important; overflow: auto !important;}

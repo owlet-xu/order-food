@@ -1,0 +1,36 @@
+
+<div class="layout">
+    <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+        <div class="title">{{ 'project_name' | translate }}</div>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group>
+              <input type="text" nz-input formControlName="username" [placeholder]="'username' | translate" [(ngModel)]="loginName">
+            </nz-input-group>
+            <nz-form-explain *ngIf="loginForm.get('username').dirty && loginForm.get('username').errors">
+              {{ 'require_username' | translate }}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group>
+              <input type="password" nz-input formControlName="password" [placeholder]="'password' | translate" [(ngModel)]="loginPassWord">
+            </nz-input-group>
+            <nz-form-explain *ngIf="loginForm.get('password').dirty && loginForm.get('password').errors">
+              {{ 'require_password' | translate }}
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <div style="display: flex;">
+              <div style="flex: 1 1 auto"><label nz-checkbox formControlName="remember"><span>{{ 'rememberPassword' | translate }}</span></label></div>
+              <div style="flex: 1 1 auto"><a (click)="changeLanguge()" style="float: right;">{{ 'changeLanguage' | translate }}</a></div>
+            </div>
+            <button class="login-from-button" nz-button [nzType]="'primary'">{{ 'login' | translate }}</button>
+            <a style="float: right;" routerLink="register">{{ 'register_count' | translate }}</a>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+</div>

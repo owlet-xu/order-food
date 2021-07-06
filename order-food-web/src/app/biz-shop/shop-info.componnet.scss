@@ -1,0 +1,30 @@
+.user-info-cart {
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
+  padding: 10px 40px 10px 40px;
+  margin: 10px;
+  background-color: white;
+}
+
+.user-info-item {
+  display: flex;
+  border-top: 1px solid #d9d9d9;
+  padding: 20px 10px 20px 10px;
+}
+
+.user-info-item-head {
+  flex: 0 0 200px;
+  border-right: 1px solid #d9d9d9;
+  text-align: center;
+  font-size: 16px;
+}
+
+.user-info-item-body {
+  flex: 1 1 auto;
+  padding-left: 20px;
+}
+
+.user-info-item-foot {
+  flex: 0 0 100px;
+  text-align: center;
+}

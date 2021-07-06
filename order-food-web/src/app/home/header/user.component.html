@@ -1,0 +1,14 @@
+<nz-dropdown nzPlacement="bottomRight" style="height: 60px;">
+  <div class="item" nz-dropdown >
+    <nz-avatar [nzSrc]="baseImgUrl + userData.headImg" nzSize="small" class="mr-sm"></nz-avatar>
+    <label class="item-name">&nbsp;{{userData.name}}</label>
+  </div>
+  <ul nz-menu class="item-sub-menu">
+    <li nz-menu-item (click)="toMyInfo()">
+      <i class="anticon anticon-user mr-sm"></i>&nbsp;{{'menu_shop_info' | translate }}</li>
+      <li nz-menu-item (click)="changeLanguge()">
+        <i class="anticon anticon-sync mr-sm"></i>&nbsp;{{ 'changeLanguage' | translate }}</li>
+    <li nz-menu-item (click)="loginOut()">
+      <i class="anticon anticon-logout mr-sm"></i>&nbsp;{{ 'sign_out' | translate }}</li>
+  </ul>
+</nz-dropdown>

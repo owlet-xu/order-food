@@ -1,0 +1,9 @@
+<nz-dropdown nzPlacement="bottomRight" style="height: 60px" *ngIf="count > 0">
+  <div class="item" nz-dropdown >
+      <i class="anticon anticon-bell my-bell"></i>
+      <div class="my-red-count">{{count}}</div>
+  </div>
+  <ul nz-menu class="item-sub-menu">
+    <li nz-menu-item  *ngFor="let item of orders" (click)="toOrders()">订单{{item.orderNu}}等待被接单</li>
+  </ul>
+</nz-dropdown>

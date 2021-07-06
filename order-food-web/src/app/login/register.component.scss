@@ -1,0 +1,49 @@
+.layout{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(../../assets/images/background1.jpg) no-repeat center top;
+    background-size: 100% 100%;
+}
+.title{
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+.register-form{
+    width: 350px;
+    background: rgba(#fff, .8);
+    padding:20px 50px;
+    border-radius: 20px;
+    animation: boxShadow 4s ease-in-out infinite alternate;
+}
+
+@keyframes boxShadow{
+  from{
+    box-shadow: 0px 0px 10px #fff;
+  }
+  to{
+    box-shadow: 0px 0px 100px #fff;
+  }
+}
+
+
+.register-form-button{
+    width: 100%;
+}
+
+
+@media (max-width:414px){
+  .layout {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url(../../assets/images/background2.jpg) no-repeat center top;
+    background-size: 100% 100%;
+  }
+}
+

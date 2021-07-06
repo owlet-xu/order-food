@@ -1,0 +1,11 @@
+{
+  "login": "Login",
+  "username": "Usuário",
+  "password": "Senha",
+  "require_username": "Campo obrigatório",
+  "require_password": "Campo obrigatório",
+  "stapleFood":"StapleFood",
+  "abbrFood":"AbbrleFood",
+  "drink":"Drink",
+  "vegetableOnRice":"VegetableOnRice"
+}

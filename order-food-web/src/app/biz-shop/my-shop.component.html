@@ -1,0 +1,25 @@
+<div style="margin: 10px 10px -15px 10px;">
+  <nz-list [nzDataSource]="totalData" [nzRenderItem]="item" [nzGrid]="{gutter: 16, span: 6}">
+    <ng-template #item let-item>
+      <nz-list-item [nzContent]="nzContent">
+        <ng-template #nzContent>
+          <nz-card [nzTitle]="item.title" style="font-size: 20px;">
+            {{item.content}}
+          </nz-card>
+        </ng-template>
+      </nz-list-item>
+    </ng-template>
+  </nz-list>
+</div>
+<div style="display: flex;">
+  <div style="flex: 1 1 auto;" class="my-pie-card">
+      <div style="display: flex;justify-content: center;">
+          <div class="my-pie" echarts [options]="options"></div>
+      </div>
+  </div>
+  <div style="flex: 1 1 auto;" class="my-pie-card">
+      <div style="display: flex;justify-content: center;">
+          <div class="my-pie" echarts [options]="options2"></div>
+      </div>
+  </div>
+</div>

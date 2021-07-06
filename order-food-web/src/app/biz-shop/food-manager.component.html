@@ -1,0 +1,145 @@
+<form nz-form [formGroup]="validateForm" style="padding: 10px;background-color: white;margin: 0 10px 0 10px;">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="4" *ngFor="let control of controlArray" [style.display]="control.show?'block':'none'">
+      <nz-form-item *ngIf="control.domType === 'input'">
+        <nz-form-label nzSm="8" nzXs="24">{{ control.title }}</nz-form-label>
+        <nz-form-control nzSm="16" nzXs="24">
+          <input nz-input [placeholder]="control.placeholder" [type]="control.type" [formControlName]="'field'+control.index" [attr.id]="'field'+control.index">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="control.domType === 'select_price'">
+        <nz-form-label nzSm="8" nzXs="24">{{ control.title }}</nz-form-label>
+        <nz-form-control nzSm="16" nzXs="24">
+          <nz-select [formControlName]="'field' + control.index" [nzPlaceHolder]="control.placeholder">
+            <nz-option nzValue="0" nzLabel="全部"></nz-option>
+            <nz-option nzValue="1" nzLabel="0-10"></nz-option>
+            <nz-option nzValue="2" nzLabel="10-20"></nz-option>
+            <nz-option nzValue="3" nzLabel="20以上"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="control.domType === 'select_type'">
+        <nz-form-label nzSm="8" nzXs="24">{{ control.title }}</nz-form-label>
+        <nz-form-control nzSm="16" nzXs="24">
+          <nz-select [formControlName]="'field' + control.index" [nzPlaceHolder]="control.placeholder">
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="0" nzLabel="炒菜"></nz-option>
+            <nz-option nzValue="1" nzLabel="盖浇饭"></nz-option>
+            <nz-option nzValue="2" nzLabel="面条"></nz-option>
+            <nz-option nzValue="3" nzLabel="饮料"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="control.domType === 'select_status'">
+        <nz-form-label nzSm="8" nzXs="24">{{ control.title }}</nz-form-label>
+        <nz-form-control nzSm="16" nzXs="24">
+          <nz-select [formControlName]="'field' + control.index" [nzPlaceHolder]="control.placeholder">
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="0" nzLabel="上架"></nz-option>
+            <nz-option nzValue="1" nzLabel="下架"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col [nzSpan]="4" style="display: block">
+      <button nz-button [nzType]="'primary'" (click)="getList()">搜索</button>&nbsp;&nbsp;
+      <button nz-button [nzType]="'primary'" (click)="showAdd()">添加</button>&nbsp;&nbsp;
+      <button nz-button (click)="resetForm()">清除</button>
+    </div>
+  </div>
+</form>
+<nz-list class="my-list" [nzDataSource]="data" [nzItemLayout]="'vertical'" [nzRenderItem]="item" >
+  <div style="text-align: center;"><nz-spin *ngIf="dataLoading"></nz-spin></div>
+  <ng-template #item let-item>
+    <nz-list-item [nzContent]="item.remarks" [nzActions]="[startAction, likeAction, msgAction]" [nzExtra]="extra">
+      <ng-template #startAction>
+        <i class="anticon anticon-up-circle-o" style="margin-right: 8px;" (click)="foodActive(item.id,'0')">上架</i>
+      </ng-template>
+      <ng-template #likeAction>
+        <i class="anticon anticon-down-circle-o" style="margin-right: 8px;" (click)="foodActive(item.id,'1')">下架</i>
+      </ng-template>
+      <ng-template #msgAction>
+        <i class="anticon anticon-delete" style="margin-right: 8px;" (click)="foodDelete(item.id,item.foodName)">删除</i>
+      </ng-template>
+      <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="'价格：' + item.price + '元' + '    优惠价格：' + item.discountPrice + '元' + '状态：' + getStatusName(item.status)">
+        <ng-template #nzTitle>
+          <a>{{item.foodName +  '    (' + getFoodTypeName(item.foodType) + ')'}}</a>
+        </ng-template>
+      </nz-list-item-meta>
+      <ng-template #extra>
+        <img style="width: 240px;height: 140px;" alt="logo" [src]="baseImgUrl + item.picture" />
+      </ng-template>
+    </nz-list-item>
+  </ng-template>
+</nz-list>
+<nz-modal [(nzVisible)]="isShowAdd" nzTitle="添加菜品" (nzOnCancel)="closeAdd()" (nzOnOk)="add()" >
+  <form nz-form [formGroup]="validateFormAdd">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">图片</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+          <div class="clearfix">
+              <nz-upload [nzAction]="baseImgUploadUrl" nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 4"
+                (nzChange)="uploadChange($event)"
+                [nzPreview]="handlePreview">
+                <i class="anticon anticon-plus"></i>
+                <div class="ant-upload-text">Upload</div>
+              </nz-upload>
+              <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
+                <ng-template #modalContent>
+                  <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+                </ng-template>
+              </nz-modal>
+            </div>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSm="6" nzXs="24" nzRequired>菜品名称</nz-form-label>
+      <nz-form-control nzSm="14" nzXs="24">
+        <input nz-input formControlName="foodName" />
+        <nz-form-explain *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('required')">请填写菜品名称</nz-form-explain>
+        <nz-form-explain *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('minlength')">菜品名称最短为2个字</nz-form-explain>
+        <nz-form-explain *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('maxlength')">菜品名称最长为10个字</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSm="6" nzXs="24" nzRequired>价格</nz-form-label>
+      <nz-form-control nzSm="14" nzXs="24">
+        <input nz-input formControlName="price" type="number" />
+        <nz-form-explain *ngIf="validateFormAdd.get('price').dirty && validateFormAdd.get('price').hasError('min')">价格应大于0</nz-form-explain>
+        <nz-form-explain *ngIf="validateFormAdd.get('price').dirty && validateFormAdd.get('price').hasError('max')">价格过大</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSm="6" nzXs="24" nzRequired>类型</nz-form-label>
+      <nz-form-control nzSm="14" nzXs="24">
+        <nz-select formControlName="foodType" nzPlaceHolder="请选择类型" [(ngModel)]="foodTypeSelect">
+          <nz-option nzValue="0" nzLabel="炒菜"></nz-option>
+          <nz-option nzValue="1" nzLabel="盖浇饭"></nz-option>
+          <nz-option nzValue="2" nzLabel="面条"></nz-option>
+          <nz-option nzValue="3" nzLabel="饮料"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSm="6" nzXs="24">是否优惠</nz-form-label>
+      <nz-form-control nzSm="14" nzXs="24">
+        <nz-select formControlName="isDiscount" nzPlaceHolder="请选择是否优惠" [(ngModel)]="isDiscountSelect">
+          <nz-option nzValue="0" nzLabel="否" selected></nz-option>
+          <nz-option nzValue="1" nzLabel="是"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSm="6" nzXs="24">优惠价格</nz-form-label>
+      <nz-form-control nzSm="14" nzXs="24">
+        <input nz-input formControlName="discountPrice" type="number" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzSm="6" nzXs="24">介绍</nz-form-label>
+      <nz-form-control nzSm="14" nzXs="24">
+        <textarea nz-input formControlName="remarks" rows="3"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

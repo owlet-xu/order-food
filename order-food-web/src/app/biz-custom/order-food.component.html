@@ -1,0 +1,59 @@
+<div class="gutter-example">
+  <h2 class="foodlist">{{'hotRecommend' | translate}}</h2>
+  <div class="banner">
+    <div class=" swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let index of List">
+          <div class="hot"><img (click)="toFoodInfo(index)"  [src]="baseImgUrl +index.pic" /><h3>{{index.foodName}}</h3></div>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+
+<div class="foodmenu">
+    <h3 class="foodtitle foodtitle1">{{'stapleFood' | translate}}</h3>
+    <div nz-row>
+        <div #food *ngFor="let item of data"   nz-col  [nzXs]="{span:23,offset:1}" [nzSm]="{span:11,offset:1}" [nzMd]="{span:7,offset:1}"  [nzLg]="{span:5,offset:1}"  [nzXXl]="{span:3,offset:1}"  >
+            <div class="pic"><img [src]="baseImgUrl + item.picture"  alt="{{item.foodName}}"></div>
+            <h4 class="foodname">{{item.foodName}}</h4>
+            <div><span class="discountprice">优惠价：{{item.discountPrice}}</span><span class="price">原价：{{item.price}}</span></div>
+            <div class="more" (click)="showModal(item)">查看详细</div>
+            <span class="guest-btn"><a href="javascript:;" (click)="add(item)" class="add add1">加入购物车</a></span>
+        </div>
+    </div>
+    <h3 class="foodtitle foodtitle4">{{'vegetableOnRice' | translate}}</h3>
+    <div nz-row>
+        <div #food *ngFor="let item of data2"   nz-col  [nzXs]="{span:23,offset:1}" [nzSm]="{span:11,offset:1}" [nzMd]="{span:7,offset:1}"  [nzLg]="{span:5,offset:1}"  [nzXXl]="{span:3,offset:1}"  >
+          <div class="pic"><img [src]="baseImgUrl + item.picture"  alt="{{item.foodName}}"></div>
+            <h4 class="foodname">{{item.foodName}}</h4>
+            <div><span class="discountprice">优惠价：{{item.discountPrice}}</span><span class="price">原价：{{item.price}}</span></div>
+            <div class="more" (click)="showModal(item)">查看详细</div>
+            <span class="guest-btn"><a href="javascript:;" (click)="add(item)" class="add add4">加入购物车</a></span>
+        </div>
+    </div>
+    <h3 class="foodtitle foodtitle2">{{'abbrFood' | translate}}</h3>
+    <div nz-row>
+        <div #food *ngFor="let item of data3"   nz-col [nzXs]="{span:23,offset:1}" [nzSm]="{span:11,offset:1}" [nzMd]="{span:7,offset:1}"  [nzLg]="{span:5,offset:1}"  [nzXXl]="{span:3,offset:1}"  >
+            <div class="pic"><img [src]="baseImgUrl + item.picture"  alt="{{item.foodName}}"></div>
+            <h4 class="foodname">{{item.foodName}}</h4>
+            <div><span class="discountprice">优惠价：{{item.discountPrice}}</span><span class="price">原价：{{item.price}}</span></div>
+            <div class="more" (click)="showModal(item)" >查看详细</div>
+            <span class="guest-btn"><a href="javascript:;" (click)="add(item)" class="add add2">加入购物车</a></span>
+        </div>
+    </div>
+    <h3 class="foodtitle foodtitle3">{{'drink' | translate}}</h3>
+    <div nz-row>
+        <div #food *ngFor="let item of data4"   nz-col [nzXs]="{span:23,offset:1}" [nzSm]="{span:11,offset:1}" [nzMd]="{span:7,offset:1}"  [nzLg]="{span:5,offset:1}"  [nzXXl]="{span:3,offset:1}"  >
+            <div class="pic"><img [src]="baseImgUrl + item.picture"  alt="{{item.foodName}}"></div>
+            <h4 class="foodname">{{item.foodName}}</h4>
+            <div><span class="discountprice">优惠价：{{item.discountPrice}}</span><span class="price">原价：{{item.price}}</span></div>
+            <div class="more" (click)="showModal(item)" >查看详细</div>
+            <span class="guest-btn"><a href="javascript:;" (click)="add(item)" class="add add3">加入购物车</a></span>
+        </div>
+    </div>
+</div>
+</div>
+

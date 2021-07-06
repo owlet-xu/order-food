@@ -1,0 +1,10 @@
+
+
+  <div nz-row>
+    <div nz-col nzSpan="20">
+        <od-my-custom-list (selectUserData)="getUserDataFromChild($event)"></od-my-custom-list>
+    </div>
+    <div nz-col nzSpan="4">
+      <od-my-custom-detail [userData]="selectUserData"></od-my-custom-detail>
+    </div>
+  </div>

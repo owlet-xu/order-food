@@ -1,0 +1,15 @@
+
+<nz-layout class="layout">
+  <nz-header class="header" >
+    <od-header></od-header>
+  </nz-header>
+  <nz-layout>
+    <nz-sider class="sider"  [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="80" [nzBreakpoint]="'lg'" >
+      <od-sider></od-sider>
+    </nz-sider>
+    <nz-content class="content">
+      <router-outlet>
+      </router-outlet>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
