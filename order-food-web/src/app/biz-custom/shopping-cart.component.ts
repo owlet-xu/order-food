@@ -115,7 +115,7 @@ export class ShoppingCartComponent implements OnInit {
     console.log('++++++++++++', this.obj); */
     header.append('Content-Type', 'application/json');
     this.http.post(
-      'http://172.19.14.22:8666/api/v1/createOrderInfo',
+      'http://localhost:32113/api/v1/createOrderInfo',
       {
         'orderId': this.userData.id,
         'orderAddress': this.userData.address,

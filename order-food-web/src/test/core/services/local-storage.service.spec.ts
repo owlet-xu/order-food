@@ -14,7 +14,7 @@ describe('LocalStorageService', () => {
   }));
 
   it('should correct url', inject([LocalStorageService], (service: LocalStorageService) => {
-    expect(service.get(service.baseUrl)).toBe('http://172.19.14.22:8666');
+    expect(service.get(service.baseUrl)).toBe('http://localhost:32113');
     expect(service.get(service.baseImgUrl)).toBe('http://172.18.8.10/');
     expect(service.get(service.baseImgUploadUrl)).toBe('http://172.18.8.10:8666/api/v1/upload');
   }));

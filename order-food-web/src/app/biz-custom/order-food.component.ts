@@ -127,7 +127,7 @@ import { SessionStorageService } from 'app/core/services/session-storage.service
     const userData = this.storageSession.getObject(this.storageSession.userData);
     header.append('Content-Type', 'application/json');
     this.http.post(
-        'http://172.19.14.22:8666/api/v1/searchgaijiaofan',
+        'http://localhost:32113/api/v1/searchgaijiaofan',
         {
           foodType: 0,
           maxPrice: 0,
@@ -155,7 +155,7 @@ import { SessionStorageService } from 'app/core/services/session-storage.service
       );
 
       this.http.post(
-        'http://172.19.14.22:8666/api/v1/searchgaijiaofan',
+        'http://localhost:32113/api/v1/searchgaijiaofan',
         {
           foodType: 1,
           maxPrice: 0,
@@ -183,7 +183,7 @@ import { SessionStorageService } from 'app/core/services/session-storage.service
       );
 
       this.http.post(
-        'http://172.19.14.22:8666/api/v1/searchgaijiaofan',
+        'http://localhost:32113/api/v1/searchgaijiaofan',
         {
           foodType: 2,
           maxPrice: 0,
@@ -211,7 +211,7 @@ import { SessionStorageService } from 'app/core/services/session-storage.service
       );
 
       this.http.post(
-        'http://172.19.14.22:8666/api/v1/searchgaijiaofan',
+        'http://localhost:32113/api/v1/searchgaijiaofan',
         {
           foodType: 3,
           maxPrice: 0,

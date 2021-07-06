@@ -72,7 +72,7 @@ export class OrderFoodDetailComponent implements OnInit {
     header = new HttpHeaders();
 
     header.append('Content-Type', 'application/json');
-    this.http.get('http://172.19.14.22:8666/api/v1/fooddetail/' +  this.foodId)
+    this.http.get('http://localhost:32113/api/v1/fooddetail/' +  this.foodId)
     .subscribe(
       val => {
         const back = JSON.parse(JSON.stringify(val));
@@ -96,7 +96,7 @@ export class OrderFoodDetailComponent implements OnInit {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
-    this.http.get('http://172.19.14.22:8666/api/v1/commentlist/' + this.foodId)
+    this.http.get('http://localhost:32113/api/v1/commentlist/' + this.foodId)
     .subscribe(
       val => {
         const ass = JSON.parse(JSON.stringify(val));

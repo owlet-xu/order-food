@@ -15,7 +15,7 @@ export class LocalStorageService {
     }
     this.localStorage = localStorage;
     this.set(this.baseUrl, 'http://localhost:32113');
-    this.set(this.baseImgUrl, 'http://172.19.14.22:10000/');
+    this.set(this.baseImgUrl, 'http://localhost:9001/image/');
     this.set(this.baseImgUploadUrl, 'http://localhost:32113/api/v1/upload');
   }
 
