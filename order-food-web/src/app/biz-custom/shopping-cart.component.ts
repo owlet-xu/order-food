@@ -99,7 +99,7 @@ export class ShoppingCartComponent implements OnInit {
       this.signal = 'in';
     }
   }
-  handleOk(item: any): void {
+  handleOk(): void {
     this.totalPrice = this.service.total;
     this.service.guest.forEach(element => {
       this.obj = {
