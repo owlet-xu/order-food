@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { ShopDataService } from 'app/core/services/shop-data.service';
+import { MyToolsService } from 'app/core/services/my-tools.service';
+import { UserInfo } from 'app/models/user-info';
 
 @Component({
   selector: 'od-my-info',
@@ -19,7 +21,7 @@ import { ShopDataService } from 'app/core/services/shop-data.service';
 
 export class MyInfoComponent implements OnInit {
 
-  userData: any;
+  userData: UserInfo;
   isShowEdit = false;
   registerForm: FormGroup;
   userSex = '0';
@@ -29,6 +31,7 @@ export class MyInfoComponent implements OnInit {
   imgUploadUrl: string;
   baseImgUrl: string;
   confirmPass: string;
+  uploading = false; // 是否有正在上传图片
 
   constructor(
     private storageSession: SessionStorageService,
@@ -36,7 +39,8 @@ export class MyInfoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private shopDataService: ShopDataService,
     private message: NzMessageService,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private myTools: MyToolsService
   ) {
     if (!this.storageSession.isLogin()) {
       this.router.navigate(['login']);
@@ -68,6 +72,19 @@ export class MyInfoComponent implements OnInit {
     this.previewVisible = true;
   }
 
+  // nzBeforeUpload 返回 false 后，手动上传文件。
+  beforeUpload = (file: any): boolean => {
+    this.uploading = true;
+    this.fileList.push(file);
+    return false;
+  }
+
+  uploadChange(event) {
+    if (event.type === 'success') {
+      this.userData.headImg = event.fileList[0].response.fileName;
+    }
+  }
+
   // 密码验证
   validatePassw = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {// 不存在
@@ -88,39 +105,20 @@ export class MyInfoComponent implements OnInit {
   }
 
   showOrCloseModel(isShow: boolean) {
+    this.uploading = false;
     this.isShowEdit = isShow;
   }
 
-  editUserInfo() {
-    for (const field in this.registerForm.controls) {
-      if (field) {
-        this.registerForm.controls[field].markAsDirty();
-        this.registerForm.controls[field].updateValueAndValidity();
-      }
-    }
+  save() {
     this.userData.sex = this.userSex;
-    if (this.registerForm.valid) {
-      this.shopDataService.editUser(
-        this.userData.id,
-        this.userData.address,
-        this.userData.age,
-        this.userData.email,
-        this.userData.headImg,
-        this.userData.interest,
-        this.userData.name,
-        this.userData.passWord,
-        this.userData.phone,
-        this.userData.sex,
-        this.userData.type
-      ).subscribe(res => {
-        const data = JSON.parse(JSON.stringify(res));
-        if (data.success) {
-          this.message.success('修改成功');
-          this.storageSession.setObject(this.storageSession.userData, this.userData);
-          this.isShowEdit = false;
-        }
-      });
-    }
+    this.shopDataService.editUser(this.userData).subscribe(res => {
+      const data = JSON.parse(JSON.stringify(res));
+      if (data.success) {
+        this.message.success('修改成功');
+        this.storageSession.setObject(this.storageSession.userData, this.userData);
+        this.isShowEdit = false;
+      }
+    });
   }
   getSexName(key) {
     switch (key) {
@@ -130,9 +128,37 @@ export class MyInfoComponent implements OnInit {
         return '女';
     }
   }
-  uploadChange(event) {
-    if (event.type === 'success') {
-      this.userData.headImg = event.fileList[0].response.fileName;
+
+  validForm() {
+    if (this.uploading && this.fileList.length !== 1) {
+      this.message.warning('添加一张图片');
+      return false;
+    }
+    for (const field in this.registerForm.controls) {
+      if (field) {
+        this.registerForm.controls[field].markAsDirty();
+        this.registerForm.controls[field].updateValueAndValidity();
+      }
+    }
+    return this.registerForm.valid;
+  }
+
+  // 上传图片
+  upload() {
+    if (!this.validForm()) {
+      return;
+    }
+    if (this.uploading) {
+      this.myTools.upload(this.fileList, (data: any) => {
+        if (!Array.isArray(data)) {
+          this.message.error('上传图片失败');
+          return;
+        }
+        this.userData.headImg = data[0].fileId;
+        this.save();
+      });
+    } else {
+      this.save();
     }
   }
 }

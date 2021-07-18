@@ -118,7 +118,7 @@ export class FoodManagerComponent implements OnInit {
   // 上传图片
   upload() {
     if (!this.validForm()) {
-      // return;
+      return;
     }
     if (this.uploading) {
       this.myTools.upload(this.fileList, (data: any) => {

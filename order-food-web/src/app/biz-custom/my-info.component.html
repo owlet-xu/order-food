@@ -74,14 +74,15 @@
     </div>
   </div>
 </div>
-<nz-modal [(nzVisible)]="isShowEdit" nzTitle="修改用户信息" (nzOnCancel)="showOrCloseModel(false)" (nzOnOk)="editUserInfo()">
+<nz-modal [(nzVisible)]="isShowEdit" nzTitle="修改用户信息" (nzOnCancel)="showOrCloseModel(false)" (nzOnOk)="upload()">
   <form nz-form [formGroup]="registerForm" class="register-form">
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">头像</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
         <div class="clearfix">
-          <nz-upload [nzAction]="imgUploadUrl" nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1"
-            [nzPreview]="handlePreview" (nzChange)="uploadChange($event)">
+          <nz-upload [nzAction]="" nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1"
+            [nzPreview]="handlePreview" (nzChange)="uploadChange($event)"
+            [nzBeforeUpload]="beforeUpload">
             <i class="anticon anticon-plus"></i>
             <div class="ant-upload-text">Upload</div>
           </nz-upload>

@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { ShopDataService } from 'app/core/services/shop-data.service';
+import { UserInfo } from 'app/models/user-info';
+import { MyToolsService } from 'app/core/services/my-tools.service';
 
 @Component({
   selector: 'od-shop-info',
@@ -19,7 +21,7 @@ import { ShopDataService } from 'app/core/services/shop-data.service';
 
 export class ShopInfoComponent implements OnInit {
 
-  userData: any;
+  userData: UserInfo;
   isShowEdit = false;
   registerForm: FormGroup;
   userSex = '0';
@@ -29,6 +31,7 @@ export class ShopInfoComponent implements OnInit {
   imgUploadUrl: string;
   baseImgUrl: string;
   confirmPass: string;
+  uploading = false; // 是否有正在上传图片
 
   constructor(
     private storageSession: SessionStorageService,
@@ -36,7 +39,8 @@ export class ShopInfoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private shopDataService: ShopDataService,
     private message: NzMessageService,
-    private storage: LocalStorageService
+    private storage: LocalStorageService,
+    private myTools: MyToolsService
   ) {
     if (!this.storageSession.isLogin()) {
       this.router.navigate(['login']);
@@ -47,7 +51,7 @@ export class ShopInfoComponent implements OnInit {
     console.log('=-------' + this.imgUploadUrl);
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.registerForm = this.formBuilder.group({
       username: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
       password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
@@ -68,71 +72,91 @@ export class ShopInfoComponent implements OnInit {
     this.previewVisible = true;
   }
 
-    // 密码验证
-    validatePassw = (control: FormControl): { [s: string]: boolean } => {
-      if (!control.value) {// 不存在
-        return { required: true };
-      } else if (this.registerForm.controls.password.value !== this.registerForm.controls.password2.value) {// 密码不一致
-        return { confirm: true, error: true };
-      } else if (this.registerForm.controls.password2.value.length < 6) {
-        return { lenShort: true, error: true };
-      }
+  // 密码验证
+  validatePassw = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {// 不存在
+      return { required: true };
+    } else if (this.registerForm.controls.password.value !== this.registerForm.controls.password2.value) {// 密码不一致
+      return { confirm: true, error: true };
+    } else if (this.registerForm.controls.password2.value.length < 6) {
+      return { lenShort: true, error: true };
     }
-    // 手机号验证
-    validatePhone = (control: FormControl): { [s: string]: boolean } => {
-      if (!control.value) {
-        return { required: true };
-      } else if (/^(13|15|18|17)\d{9}$/i.test(control.value) !== true) {
-        return { phoneFormateError: true, error: true };
-      }
+  }
+  // 手机号验证
+  validatePhone = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { required: true };
+    } else if (/^(13|15|18|17)\d{9}$/i.test(control.value) !== true) {
+      return { phoneFormateError: true, error: true };
     }
+  }
 
   showOrCloseModel(isShow: boolean) {
     this.isShowEdit = isShow;
   }
 
-  editUserInfo () {
+  save() {
+    this.userData.sex = this.userSex;
+    this.shopDataService.editUser(this.userData).subscribe(res => {
+      const data = JSON.parse(JSON.stringify(res));
+      if (data.success) {
+        this.message.success('修改成功');
+        this.storageSession.setObject(this.storageSession.userData, this.userData);
+        this.isShowEdit = false;
+      }
+    });
+  }
+  getSexName(key) {
+    switch (key) {
+      case '0':
+        return '男';
+      case '1':
+        return '女';
+    }
+  }
+  uploadChange(event) {
+    if (event.type === 'success') {
+      this.userData.headImg = event.fileList[0].response.fileName;
+    }
+  }
+
+  // nzBeforeUpload 返回 false 后，手动上传文件。
+  beforeUpload = (file: any): boolean => {
+    this.uploading = true;
+    this.fileList.push(file);
+    return false;
+  }
+
+  // 上传图片
+  upload() {
+    if (!this.validForm()) {
+      return;
+    }
+    if (this.uploading) {
+      this.myTools.upload(this.fileList, (data: any) => {
+        if (!Array.isArray(data)) {
+          this.message.error('上传图片失败');
+          return;
+        }
+        this.userData.headImg = data[0].fileId;
+        this.save();
+      });
+    } else {
+      this.save();
+    }
+  }
+  // 验证
+  validForm(): boolean {
+    if (this.uploading && this.fileList.length < 1) {
+      this.message.warning('至少添加2张图片');
+      return false;
+    }
     for (const field in this.registerForm.controls) {
       if (field) {
         this.registerForm.controls[field].markAsDirty();
         this.registerForm.controls[field].updateValueAndValidity();
       }
     }
-    this.userData.sex = this.userSex;
-    if (this.registerForm.valid) {
-      this.shopDataService.editUser(
-        this.userData.id,
-        this.userData.address,
-        this.userData.age,
-        this.userData.email,
-        this.userData.headImg,
-        this.userData.interest,
-        this.userData.name,
-        this.userData.passWord,
-        this.userData.phone,
-        this.userData.sex,
-        this.userData.type
-      ).subscribe(res => {
-        const data = JSON.parse(JSON.stringify(res));
-        if (data.success) {
-          this.message.success('修改成功');
-          this.storageSession.setObject(this.storageSession.userData, this.userData);
-          this.isShowEdit = false;
-        }
-      });
-    }
-  }
-  getSexName (key) {
-    switch (key) {
-      case '0':
-      return '男';
-      case '1':
-      return '女';
-    }
-  }
-  uploadChange (event) {
-    if (event.type === 'success') {
-      this.userData.headImg = event.fileList[0].response.fileName;
-    }
+    return this.registerForm.valid;
   }
 }

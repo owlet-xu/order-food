@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LocalStorageService } from 'app/core/services/local-storage.service';
 import { FoodInfo } from 'app/models/food-info';
+import { UserInfo } from 'app/models/user-info';
 
 @Injectable()
 export class ShopDataService {
 
-  constructor(private http: HttpClient, private storage: LocalStorageService) {}
+  constructor(private http: HttpClient, private storage: LocalStorageService) { }
 
   getFoodList(foodName: string, minPrice: number, maxPrice: number, foodType: number, status: number, back: any) {
     let header: HttpHeaders;
@@ -18,7 +19,7 @@ export class ShopDataService {
       maxPrice: maxPrice,
       foodType: foodType,
       status: status
-    }, {headers: header}).subscribe(
+    }, { headers: header }).subscribe(
       (val) => {
         const data = JSON.parse(JSON.stringify(val));
         back(data);
@@ -41,7 +42,7 @@ export class ShopDataService {
     header.append('Content-Type', 'application/json');
     this.http.post(this.storage.get(this.storage.baseUrl) + '/api/v1/addFood', {
       ...food
-    }, {headers: header}).subscribe(
+    }, { headers: header }).subscribe(
       (val) => {
         const data = JSON.parse(JSON.stringify(val));
         back(data);
@@ -62,7 +63,7 @@ export class ShopDataService {
     this.http.post(this.storage.get(this.storage.baseUrl) + '/api/v1/updatestatus', {
       id: id,
       status: status
-    }, {headers: header}).subscribe(
+    }, { headers: header }).subscribe(
       (val) => {
         const data = JSON.parse(JSON.stringify(val));
         back(data);
@@ -76,7 +77,7 @@ export class ShopDataService {
     );
   }
 
-  foodDelete (id: string, back: any) {
+  foodDelete(id: string, back: any) {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
@@ -94,7 +95,7 @@ export class ShopDataService {
     );
   }
 
-  getMyCustom (name: string, phone: string, pageIndex: number, pageSize: number, back: any) {
+  getMyCustom(name: string, phone: string, pageIndex: number, pageSize: number, back: any) {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
@@ -103,7 +104,7 @@ export class ShopDataService {
       phone: phone,
       pageNum: pageIndex,
       paSize: pageSize
-    }, {headers: header}).subscribe(
+    }, { headers: header }).subscribe(
       (val) => {
         const data = JSON.parse(JSON.stringify(val));
         back(data);
@@ -116,9 +117,9 @@ export class ShopDataService {
       }
     );
   }
-  getMyOrders (num: string, name: string, address: string,
+  getMyOrders(num: string, name: string, address: string,
     status: string, beginTime: string, endTime: string, paSize: number, pageNum: number,
-  userId: string, type: string) {
+    userId: string, type: string) {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
@@ -127,7 +128,7 @@ export class ShopDataService {
       userId: userId, type: type
     }, { headers: header });
   }
-  refuseOrder (orderId: string, sellerRemark: string, userId: string) {
+  refuseOrder(orderId: string, sellerRemark: string, userId: string) {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
@@ -135,7 +136,7 @@ export class ShopDataService {
       orderId: orderId, sellerRemark: sellerRemark, status: '3'
     }, { headers: header });
   }
-  recieveOrder (orderId: string, userId: string) {
+  recieveOrder(orderId: string, userId: string) {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
@@ -143,34 +144,14 @@ export class ShopDataService {
       orderId: orderId, status: '2'
     }, { headers: header });
   }
-  editUser (
-    id: string,
-    address: string,
-    age: string,
-    email: string,
-    headImg: string,
-    interest: string,
-    name: string,
-    passWord: string,
-    phone: string,
-    sex: string,
-    type: string
+  editUser(
+    user: UserInfo
   ) {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
     return this.http.post(this.storage.get(this.storage.baseUrl) + '/api/v1/update', {
-      id: id,
-      address: address,
-    age: age,
-    email: email,
-    headImg: headImg,
-    interest: interest,
-    name: name,
-    passWord: passWord,
-    phone: phone,
-    sex: sex,
-    type: type
+      ...user
     }, { headers: header });
   }
   // 获取今日或本月订单数
@@ -185,7 +166,7 @@ export class ShopDataService {
     return this.http.get(this.storage.get(this.storage.baseUrl) + '/api/v1/countMoney/' + type);
   }
   // 获取今日订单和数目统计，分类型
-  getTodaySum () {
+  getTodaySum() {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
