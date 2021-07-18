@@ -29,7 +29,6 @@ export class MyShopComponent implements OnInit {
   constructor (private shopData: ShopDataService) { }
 
   ngOnInit () {
-    console.log('--------------------');
     this.getTodayCount();
     this.getMonthCount();
     this.getTodayMoney();
@@ -43,7 +42,7 @@ export class MyShopComponent implements OnInit {
     this.shopData.getCount('0').subscribe(res => {
       const data = JSON.parse(JSON.stringify(res));
       if (data.success) {
-        console.log(data);
+        // console.log(data);
         this.totalData[0].content = data.data + '单';
       }
     });
@@ -53,7 +52,7 @@ export class MyShopComponent implements OnInit {
       this.shopData.getCount('1').subscribe(res => {
         const data = JSON.parse(JSON.stringify(res));
         if (data.success) {
-          console.log(data);
+          // console.log(data);
           this.totalData[2].content = data.data + '单';
         }
       });
@@ -64,7 +63,7 @@ export class MyShopComponent implements OnInit {
     this.shopData.getMoney('0').subscribe(res => {
       const data = JSON.parse(JSON.stringify(res));
       if (data.success) {
-        console.log(data);
+        // console.log(data);
         this.totalData[1].content = data.data + '元';
       }
     });
@@ -74,7 +73,7 @@ export class MyShopComponent implements OnInit {
     this.shopData.getMoney('1').subscribe(res => {
       const data = JSON.parse(JSON.stringify(res));
       if (data.success) {
-        console.log(data);
+        // console.log(data);
         this.totalData[3].content = data.data + '元';
       }
     });

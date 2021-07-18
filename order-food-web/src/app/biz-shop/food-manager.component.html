@@ -4,7 +4,8 @@
       <nz-form-item *ngIf="control.domType === 'input'">
         <nz-form-label nzSm="8" nzXs="24">{{ control.title }}</nz-form-label>
         <nz-form-control nzSm="16" nzXs="24">
-          <input nz-input [placeholder]="control.placeholder" [type]="control.type" [formControlName]="'field'+control.index" [attr.id]="'field'+control.index">
+          <input nz-input [placeholder]="control.placeholder" [type]="control.type"
+            [formControlName]="'field'+control.index" [attr.id]="'field'+control.index">
         </nz-form-control>
       </nz-form-item>
       <nz-form-item *ngIf="control.domType === 'select_price'">
@@ -48,8 +49,10 @@
     </div>
   </div>
 </form>
-<nz-list class="my-list" [nzDataSource]="data" [nzItemLayout]="'vertical'" [nzRenderItem]="item" >
-  <div style="text-align: center;"><nz-spin *ngIf="dataLoading"></nz-spin></div>
+<nz-list class="my-list" [nzDataSource]="data" [nzItemLayout]="'vertical'" [nzRenderItem]="item">
+  <div style="text-align: center;">
+    <nz-spin *ngIf="dataLoading"></nz-spin>
+  </div>
   <ng-template #item let-item>
     <nz-list-item [nzContent]="item.remarks" [nzActions]="[startAction, likeAction, msgAction]" [nzExtra]="extra">
       <ng-template #startAction>
@@ -61,9 +64,10 @@
       <ng-template #msgAction>
         <i class="anticon anticon-delete" style="margin-right: 8px;" (click)="foodDelete(item.id,item.foodName)">删除</i>
       </ng-template>
-      <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="'价格：' + item.price + '元' + '    优惠价格：' + item.discountPrice + '元' + '状态：' + getStatusName(item.status)">
+      <nz-list-item-meta [nzTitle]="nzTitle"
+        [nzDescription]="'价格：' + item.price + '元' + '    优惠价格：' + item.discountPrice + '元' + '状态：' + getStatusName(item.status)">
         <ng-template #nzTitle>
-          <a>{{item.foodName +  '    (' + getFoodTypeName(item.foodType) + ')'}}</a>
+          <a>{{item.foodName + ' (' + getFoodTypeName(item.foodType) + ')'}}</a>
         </ng-template>
       </nz-list-item-meta>
       <ng-template #extra>
@@ -72,41 +76,51 @@
     </nz-list-item>
   </ng-template>
 </nz-list>
-<nz-modal [(nzVisible)]="isShowAdd" nzTitle="添加菜品" (nzOnCancel)="closeAdd()" (nzOnOk)="add()" >
+<nz-modal [(nzVisible)]="isShowAdd" nzTitle="添加菜品" (nzOnCancel)="closeAdd()" (nzOnOk)="upload()">
   <form nz-form [formGroup]="validateFormAdd">
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">图片</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24">
-          <div class="clearfix">
-              <nz-upload [nzAction]="baseImgUploadUrl" nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 4"
-                (nzChange)="uploadChange($event)"
-                [nzPreview]="handlePreview">
-                <i class="anticon anticon-plus"></i>
-                <div class="ant-upload-text">Upload</div>
-              </nz-upload>
-              <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
-                <ng-template #modalContent>
-                  <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
-                </ng-template>
-              </nz-modal>
-            </div>
+        <div class="clearfix">
+          <nz-upload nzListType="picture-card" [nzBeforeUpload]="beforeUpload" 
+          nzAction=""
+          [(nzFileList)]="fileList"
+            [nzShowButton]="fileList.length < 4" (nzChange)="uploadChange($event)" [nzPreview]="handlePreview">
+            <i class="anticon anticon-plus"></i>
+            <div class="ant-upload-text">Upload</div>
+          </nz-upload>
+          <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+            (nzOnCancel)="previewVisible=false">
+            <ng-template #modalContent>
+              <img [src]="previewImage" [ngStyle]="{ 'width': '100%' }" />
+            </ng-template>
+          </nz-modal>
+        </div>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzSm="6" nzXs="24" nzRequired>菜品名称</nz-form-label>
       <nz-form-control nzSm="14" nzXs="24">
         <input nz-input formControlName="foodName" />
-        <nz-form-explain *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('required')">请填写菜品名称</nz-form-explain>
-        <nz-form-explain *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('minlength')">菜品名称最短为2个字</nz-form-explain>
-        <nz-form-explain *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('maxlength')">菜品名称最长为10个字</nz-form-explain>
+        <nz-form-explain
+          *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('required')">请填写菜品名称
+        </nz-form-explain>
+        <nz-form-explain
+          *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('minlength')">
+          菜品名称最短为2个字</nz-form-explain>
+        <nz-form-explain
+          *ngIf="validateFormAdd.get('foodName').dirty && validateFormAdd.get('foodName').hasError('maxlength')">
+          菜品名称最长为10个字</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzSm="6" nzXs="24" nzRequired>价格</nz-form-label>
       <nz-form-control nzSm="14" nzXs="24">
         <input nz-input formControlName="price" type="number" />
-        <nz-form-explain *ngIf="validateFormAdd.get('price').dirty && validateFormAdd.get('price').hasError('min')">价格应大于0</nz-form-explain>
-        <nz-form-explain *ngIf="validateFormAdd.get('price').dirty && validateFormAdd.get('price').hasError('max')">价格过大</nz-form-explain>
+        <nz-form-explain *ngIf="validateFormAdd.get('price').dirty && validateFormAdd.get('price').hasError('min')">
+          价格应大于0</nz-form-explain>
+        <nz-form-explain *ngIf="validateFormAdd.get('price').dirty && validateFormAdd.get('price').hasError('max')">价格过大
+        </nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

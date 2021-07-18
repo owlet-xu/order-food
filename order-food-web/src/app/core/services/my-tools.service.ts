@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoginDataService } from 'app/core/services/login-data.service';
 import { SessionStorageService } from 'app/core/services/session-storage.service';
+import { LocalStorageService } from 'app/core/services/local-storage.service';
 import { Subject, Observable } from 'rxjs';
 
 @Injectable()
-
 export class MyToolsService {
 
   private subject = new Subject<any>(); // 消息发送者
 
   constructor(
     private loginDataService: LoginDataService,
-    private storageSesson: SessionStorageService
+    private storageSesson: SessionStorageService,
+    private storage: LocalStorageService,
+    private http: HttpClient
   ) { }
 
   DateFormate(date: Date, fmt: string): string {
@@ -49,5 +52,30 @@ export class MyToolsService {
 
   getMessage(): Observable<any> {
     return this.subject.asObservable();
+  }
+
+  upload(files: any[], back: any) {
+    const formData = new FormData();
+    files.forEach((file: any) => {
+      formData.append('files', file);
+    });
+    formData.append('metadata', '{"system":"order-food","module":"qiqi-client","businessId":""}');
+
+    let header: HttpHeaders;
+    header = new HttpHeaders();
+    header.append('Content-Type', 'multipart/form-data');
+    debugger;
+    this.http.post(this.storage.get(this.storage.baseImgUploadUrl) + '/api/v1/attaches/upload/more', formData, {headers: header}).subscribe(
+      (val) => {
+        const data = JSON.parse(JSON.stringify(val));
+        back(data);
+      },
+      (response: any) => {
+        console.log('失败');
+      },
+      () => {
+        console.log('完成post');
+      }
+    );
   }
 }

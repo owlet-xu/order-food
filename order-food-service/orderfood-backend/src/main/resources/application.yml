@@ -33,7 +33,7 @@ spring:
   jpa:
     show-sql: true                    #是否显示JPA查询的SQL。为true，日志中则会记录JPA查询数据库使用的SQL语句
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 # log配置
 logging:
   config: classpath:logback-spring.xml
@@ -51,7 +51,7 @@ app:
   check-token-timeout: 3600        #token超时时间，单位是秒
   rest-connect-timeout: 10000
   rest-read-timeout: 10000
-  file-path: D:/pictures/
+  file-path: C:/files/image/
 
 # 生产环境
 ---
@@ -92,4 +92,4 @@ app:
   check-token-timeout: 3600        #token超时时间，单位是秒
   rest-connect-timeout: 10000
   rest-read-timeout: 10000
-  file-path: D:/pictures/
+  file-path: C:/files/image/

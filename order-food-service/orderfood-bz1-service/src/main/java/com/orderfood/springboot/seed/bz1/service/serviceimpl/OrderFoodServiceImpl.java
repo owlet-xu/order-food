@@ -9,6 +9,7 @@ import com.orderfood.springboot.seed.common.qiqi.HttpRestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -40,6 +41,8 @@ import java.util.List;
 public class OrderFoodServiceImpl implements OrderFoodService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     final private  String status = "1";
+    @Value("${app.file-path}")
+    private String filePath;
     @Autowired
     OrderFoodMapper orderFoodMapper;
 
@@ -161,7 +164,7 @@ public class OrderFoodServiceImpl implements OrderFoodService {
         }
         String newName = Calendar.getInstance().getTimeInMillis()+"." + oldNames[1];
         logger.debug(newName+"新的照片名称");
-        String fullPath = "D:/pictures/" + newName;
+        String fullPath = filePath + newName;
 
         fileMeta.setStatu(true);
         fileMeta.setFileName(newName);
