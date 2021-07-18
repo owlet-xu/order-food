@@ -33,7 +33,7 @@ public class OrderFoodController {
 
     @RequestMapping(value = "/addFood",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
-            value = "增加食物",notes = "增加食物",response = OrderMeanListController.class
+            value = "增加or修改食物",notes = "增加or修改食物",response = OrderMeanListController.class
     )
     public ResponseData addFood(@RequestBody OrderFoodInfo orderFoodInfo, BindingResult bindingResult) {
         if ((bindingResult.hasErrors())) {

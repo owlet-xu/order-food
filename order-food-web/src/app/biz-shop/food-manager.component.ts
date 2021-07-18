@@ -5,6 +5,7 @@ import { ShopDataService } from 'app/core/services/shop-data.service';
 import { SessionStorageService } from 'app/core/services/session-storage.service';
 import { LocalStorageService } from 'app/core/services/local-storage.service';
 import { MyToolsService } from 'app/core/services/my-tools.service';
+import { FoodInfo } from 'app/models/food-info';
 
 @Component({
   selector: 'od-food-manager',
@@ -20,7 +21,9 @@ export class FoodManagerComponent implements OnInit {
   dataLoading = false;
   // 添加菜品对话框
   isShowAdd = false;
-  validateFormAdd: FormGroup;
+  validateFormAdd: FormGroup; // 表单
+  uploading = false; // 是否有正在上传图片
+  selectedFood: FoodInfo; // 选中的食物
   fileList = [];
   previewImage = '';
   previewVisible = false;
@@ -94,15 +97,15 @@ export class FoodManagerComponent implements OnInit {
     this.getList();
   }
   // 图片预览
-  handlePreview = (file: UploadFile) => {
-    debugger;
-    this.previewImage = file.url || file.thumbUrl;
+  handlePreview = (fileId: string) => {
+    // this.previewImage = file.url || file.thumbUrl;
+    this.previewImage = this.baseImgUrl + fileId;
     this.previewVisible = true;
   }
 
   // nzBeforeUpload 返回 false 后，手动上传文件。
   beforeUpload = (file: any): boolean => {
-    debugger;
+    this.uploading = true;
     this.fileList.push(file);
     return false;
   }
@@ -115,15 +118,31 @@ export class FoodManagerComponent implements OnInit {
   // 上传图片
   upload() {
     if (!this.validForm()) {
-      return;
+      // return;
     }
-    this.myTools.upload(this.fileList, (data: any) => {
-      this.add();
-    });
+    if (this.uploading) {
+      this.myTools.upload(this.fileList, (data: any) => {
+        if (!Array.isArray(data)) {
+          this.message.error('上传图片失败');
+          return;
+        }
+        const pics = ['', '', '', ''];
+        for (let i = 0; i < data.length; i++) {
+          pics[i] = data[i].fileId;
+        }
+        this.selectedFood.picture = pics[0];
+        this.selectedFood.pictureSon1 = pics[1];
+        this.selectedFood.pictureSon2 = pics[2];
+        this.selectedFood.pictureSon3 = pics[3];
+        this.save();
+      });
+    } else {
+      this.save();
+    }
   }
   // 验证
-  validForm():boolean {
-    if (this.fileList.length < 1) {
+  validForm(): boolean {
+    if (this.uploading && this.fileList.length < 1) {
       this.message.warning('至少添加2张图片');
       return false;
     }
@@ -174,33 +193,49 @@ export class FoodManagerComponent implements OnInit {
   resetForm(): void {
     this.validateForm.reset();
   }
+  // 添加食物
   showAdd() {
+    this.selectedFood = new FoodInfo();
+    this.uploading = false;
     this.isShowAdd = true;
   }
   closeAdd() {
     this.isShowAdd = false;
   }
-  add() {
 
-    let pics: string[];
-    pics = ['', '', '', ''];
-    for (let i = 0; i < this.fileList.length; i++) {
-      pics[i] = this.fileList[i].response.fileName;
-    }
+  // 编辑食物
+  showEdit(item: any) {
+    this.selectedFood = item;
+    this.validateFormAdd.get('foodName').setValue(item.foodName);
+    this.validateFormAdd.get('price').setValue(item.price);
+    this.validateFormAdd.get('foodType').setValue(item.foodType);
+    this.validateFormAdd.get('isDiscount').setValue(item.isDiscount);
+    this.validateFormAdd.get('discountPrice').setValue(item.discountPrice);
+    this.validateFormAdd.get('remarks').setValue(item.remarks);
 
+    this.uploading = false;
+    this.isShowAdd = true;
+  }
+
+  save() {
     const { foodName, price, discountPrice, isDiscount, foodType, remarks } = this.validateFormAdd.getRawValue();
     const userId = this.storageSession.getObject(this.storageSession.userData).id;
-    this.shopDataService.addFood(foodName, price, discountPrice, isDiscount,
-      foodType, pics[0], pics[1],
-      pics[2], pics[3], userId,
-      remarks, (data) => {
-        if (data.success) {
-          this.closeAdd();
-          this.message.success('添加成功');
-          this.getList();
-          this.validateFormAdd.reset();
-        }
-      });
+    this.selectedFood.foodName = foodName;
+    this.selectedFood.price = price;
+    this.selectedFood.discountPrice = discountPrice;
+    this.selectedFood.isDiscount = isDiscount;
+    this.selectedFood.foodType = foodType;
+    this.selectedFood.remarks = remarks;
+    this.selectedFood.shopId = userId;
+
+    this.shopDataService.addFood(this.selectedFood, (data) => {
+      if (data.success) {
+        this.closeAdd();
+        this.message.success('添加成功');
+        this.getList();
+        this.validateFormAdd.reset();
+      }
+    });
   }
 
   foodActive(id: string, status: string) {

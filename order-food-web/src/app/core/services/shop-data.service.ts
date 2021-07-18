@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LocalStorageService } from 'app/core/services/local-storage.service';
+import { FoodInfo } from 'app/models/food-info';
 
 @Injectable()
 export class ShopDataService {
@@ -32,34 +33,14 @@ export class ShopDataService {
   }
 
   addFood(
-    foodName: string,
-    price: string,
-    discountPrice: string,
-    isDiscount: number,
-    foodType: number,
-    picture: string,
-    pictureSon1: string,
-    pictureSon2: string,
-    pictureSon3: string,
-    shopId: string,
-    remarks: string,
+    food: FoodInfo,
     back: any
   ) {
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
     this.http.post(this.storage.get(this.storage.baseUrl) + '/api/v1/addFood', {
-      foodName: foodName,
-      price: price,
-      discountPrice: discountPrice,
-      isDiscount: isDiscount,
-      foodType: foodType,
-      picture: picture,
-      pictureSon1: pictureSon1,
-      pictureSon2: pictureSon2,
-      pictureSon3: pictureSon3,
-      shopId: shopId,
-      remarks: remarks
+      ...food
     }, {headers: header}).subscribe(
       (val) => {
         const data = JSON.parse(JSON.stringify(val));

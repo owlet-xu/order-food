@@ -49,6 +49,7 @@
     </div>
   </div>
 </form>
+<!-- 列表 -->
 <nz-list class="my-list" [nzDataSource]="data" [nzItemLayout]="'vertical'" [nzRenderItem]="item">
   <div style="text-align: center;">
     <nz-spin *ngIf="dataLoading"></nz-spin>
@@ -67,7 +68,7 @@
       <nz-list-item-meta [nzTitle]="nzTitle"
         [nzDescription]="'价格：' + item.price + '元' + '    优惠价格：' + item.discountPrice + '元' + '状态：' + getStatusName(item.status)">
         <ng-template #nzTitle>
-          <a>{{item.foodName + ' (' + getFoodTypeName(item.foodType) + ')'}}</a>
+          <a (click)="showEdit(item)">{{item.foodName + ' (' + getFoodTypeName(item.foodType) + ')'}}</a>
         </ng-template>
       </nz-list-item-meta>
       <ng-template #extra>
@@ -76,7 +77,8 @@
     </nz-list-item>
   </ng-template>
 </nz-list>
-<nz-modal [(nzVisible)]="isShowAdd" nzTitle="添加菜品" (nzOnCancel)="closeAdd()" (nzOnOk)="upload()">
+<!-- 添加编辑表单 -->
+<nz-modal nzMaskClosable="false" [(nzVisible)]="isShowAdd" nzTitle="添加菜品" (nzOnCancel)="closeAdd()" (nzOnOk)="upload()">
   <form nz-form [formGroup]="validateFormAdd">
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">图片</nz-form-label>
@@ -85,7 +87,7 @@
           <nz-upload nzListType="picture-card" [nzBeforeUpload]="beforeUpload" 
           nzAction=""
           [(nzFileList)]="fileList"
-            [nzShowButton]="fileList.length < 4" (nzChange)="uploadChange($event)" [nzPreview]="handlePreview">
+            [nzShowButton]="fileList.length < 4" (nzChange)="uploadChange($event)">
             <i class="anticon anticon-plus"></i>
             <div class="ant-upload-text">Upload</div>
           </nz-upload>

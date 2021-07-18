@@ -47,7 +47,7 @@ export class MyInfoComponent implements OnInit {
     console.log('=-------' + this.imgUploadUrl);
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.registerForm = this.formBuilder.group({
       username: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
       password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
@@ -68,30 +68,30 @@ export class MyInfoComponent implements OnInit {
     this.previewVisible = true;
   }
 
-    // 密码验证
-    validatePassw = (control: FormControl): { [s: string]: boolean } => {
-      if (!control.value) {// 不存在
-        return { required: true };
-      } else if (this.registerForm.controls.password.value !== this.registerForm.controls.password2.value) {// 密码不一致
-        return { confirm: true, error: true };
-      } else if (this.registerForm.controls.password2.value.length < 6) {
-        return { lenShort: true, error: true };
-      }
+  // 密码验证
+  validatePassw = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {// 不存在
+      return { required: true };
+    } else if (this.registerForm.controls.password.value !== this.registerForm.controls.password2.value) {// 密码不一致
+      return { confirm: true, error: true };
+    } else if (this.registerForm.controls.password2.value.length < 6) {
+      return { lenShort: true, error: true };
     }
-    // 手机号验证
-    validatePhone = (control: FormControl): { [s: string]: boolean } => {
-      if (!control.value) {
-        return { required: true };
-      } else if (/^(13|15|18|17)\d{9}$/i.test(control.value) !== true) {
-        return { phoneFormateError: true, error: true };
-      }
+  }
+  // 手机号验证
+  validatePhone = (control: FormControl): { [s: string]: boolean } => {
+    if (!control.value) {
+      return { required: true };
+    } else if (/^(13|15|18|17)\d{9}$/i.test(control.value) !== true) {
+      return { phoneFormateError: true, error: true };
     }
+  }
 
   showOrCloseModel(isShow: boolean) {
     this.isShowEdit = isShow;
   }
 
-  editUserInfo () {
+  editUserInfo() {
     for (const field in this.registerForm.controls) {
       if (field) {
         this.registerForm.controls[field].markAsDirty();
@@ -122,15 +122,15 @@ export class MyInfoComponent implements OnInit {
       });
     }
   }
-  getSexName (key) {
+  getSexName(key) {
     switch (key) {
       case '0':
-      return '男';
+        return '男';
       case '1':
-      return '女';
+        return '女';
     }
   }
-  uploadChange (event) {
+  uploadChange(event) {
     if (event.type === 'success') {
       this.userData.headImg = event.fileList[0].response.fileName;
     }

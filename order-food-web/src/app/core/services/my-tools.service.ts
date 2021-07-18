@@ -59,12 +59,11 @@ export class MyToolsService {
     files.forEach((file: any) => {
       formData.append('files', file);
     });
-    formData.append('metadata', '{"system":"order-food","module":"qiqi-client","businessId":""}');
+    formData.append('metadata', '{"system":"orderfood","module":"qiqi-client","businessId":""}');
 
     let header: HttpHeaders;
     header = new HttpHeaders();
     header.append('Content-Type', 'multipart/form-data');
-    debugger;
     this.http.post(this.storage.get(this.storage.baseImgUploadUrl) + '/api/v1/attaches/upload/more', formData, {headers: header}).subscribe(
       (val) => {
         const data = JSON.parse(JSON.stringify(val));

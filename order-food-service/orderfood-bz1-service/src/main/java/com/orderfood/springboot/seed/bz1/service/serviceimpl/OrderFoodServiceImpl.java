@@ -40,7 +40,6 @@ import java.util.List;
 
 public class OrderFoodServiceImpl implements OrderFoodService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    final private  String status = "1";
     @Value("${app.file-path}")
     private String filePath;
     @Autowired
@@ -57,9 +56,7 @@ public class OrderFoodServiceImpl implements OrderFoodService {
             throw new HttpRestException(HttpStatus.BAD_REQUEST, "食物名称或者食物类型不能为空！");
 
         }
-
         orderFoodEntity.setAddTime(df.format(System.currentTimeMillis()));
-        orderFoodEntity.setStatus(status);
         OrderFoodEntity orderFood = orderFoodRepository.save(orderFoodEntity);
         return true;
     }
