@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------
 
 server:
-  port: 32113      #以内嵌容器形式运行时，服务绑定的端口;当服务以war包形式部署在tomcat等容器中时，会忽略server.port配置节点
+  port: 32102      #以内嵌容器形式运行时，服务绑定的端口;当服务以war包形式部署在tomcat等容器中时，会忽略server.port配置节点
 
 spring:
   profiles:
@@ -61,7 +61,7 @@ spring:
     name: order-food-service
 
   datasource:
-    url: jdbc:sqlserver://127.0.0.1:1433;databaseName=qiqi_sql  #业务数据库访问url,虚拟机的ip，如169.254.59.111
+    url: jdbc:sqlserver://127.0.0.1g:1433;databaseName=qiqi_sql  #业务数据库访问url,虚拟机的ip，如169.254.59.111
     username: sa      #业务数据库访问用户名
     password: qiqi@77 #业务数据库访问用户密码
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver #数据库访问驱动名称

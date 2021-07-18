@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GusetService } from '../core/services/gusest.services';
-import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SessionStorageService } from 'app/core/services/session-storage.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { LocalStorageService } from 'app/core/services/local-storage.service';
+import { ShopDataService } from 'app/core/services/shop-data.service';
 
 @Component({
   selector: 'od-shopping-cart',
@@ -22,7 +22,6 @@ import { LocalStorageService } from 'app/core/services/local-storage.service';
     ])
   ]
 })
-
 export class ShoppingCartComponent implements OnInit {
   // @Input() private data: any;
   signal = 'in';
@@ -53,13 +52,16 @@ export class ShoppingCartComponent implements OnInit {
 
   constructor(
     public service: GusetService,
-    private http: HttpClient,
+    private shopData: ShopDataService,
     private storageSession: SessionStorageService,
     private message: NzMessageService,
     private storage: LocalStorageService
   ) {
     this.userData = this.storageSession.getObject(this.storageSession.userData);
     this.baseImgUrl = this.storage.get(this.storage.baseImgUrl);
+    this.service.guest = [];
+    this.service.total = 0;
+    console.log(this.service.total);
   }
   inc(item) {
     for (let index = 0; index < this.service.guest.length; index++) {
@@ -89,7 +91,7 @@ export class ShoppingCartComponent implements OnInit {
     }
   }
 
-/* 初始化判断屏幕的宽度 */
+  /* 初始化判断屏幕的宽度 */
   ngOnInit() {
     if (window.innerWidth > 414) {
       this.signal = 'stop';
@@ -97,9 +99,7 @@ export class ShoppingCartComponent implements OnInit {
       this.signal = 'in';
     }
   }
-  handleOk(item): void {
-    let header: HttpHeaders;
-    header = new HttpHeaders();
+  handleOk(item: any): void {
     this.totalPrice = this.service.total;
     this.service.guest.forEach(element => {
       this.obj = {
@@ -111,41 +111,27 @@ export class ShoppingCartComponent implements OnInit {
       };
       this.arr.push(this.obj);
     });
-    /* console.log('--------------', this.arr);
-    console.log('++++++++++++', this.obj); */
-    header.append('Content-Type', 'application/json');
-    this.http.post(
-      'http://localhost:32113/api/v1/createOrderInfo',
-      {
-        'orderId': this.userData.id,
-        'orderAddress': this.userData.address,
-        'orderName': this.userData.name,
-        'orderPhone': this.userData.phone,
-        'totalPrice': this.totalPrice,
-        'orderRemark': this.inputValue,
-        'type': this.type,
-        'orderMeanListInfoList': this.arr
-      },
-      { headers: header }
-    )
-      .subscribe(
-        val => {
-          const data = JSON.parse(JSON.stringify(val));
-          if (data.success) {
-            this.message.success('添加订单成功');
-          } else {
-            this.message.error(data.msg);
-          }
-          this.service.guest = [];
-          this.service.total = 0;
-        },
-        respone => {
-         /*  console.log('失败'); */
-        },
-        () => {
-         /*  console.log('完成post'); */
+
+    this.shopData.createOrderInfo(
+      this.userData.id,
+      this.userData.address,
+      this.userData.name,
+      this.userData.phone,
+      this.totalPrice,
+      this.inputValue,
+      this.type,
+      this.arr,
+      (res) => {
+        debugger;
+        const data = JSON.parse(JSON.stringify(res));
+        if (data.success) {
+          this.message.success('添加订单成功');
+        } else {
+          this.message.error(data.msg);
         }
-      );
+        this.service.guest = [];
+        this.service.total = 0;
+      });
     this.isVisible = false;
   }
   handleCancel(): void {

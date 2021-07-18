@@ -6,7 +6,7 @@ export class LocalStorageService {
   private localStorage: any;
   public loginName = 'loginName';
   public loginPassWord = 'loginPassWord';
-  public baseUrl = 'http://localhost:32113';
+  public baseUrl = 'http://121.196.145.103:32102';
   public baseImgUrl = 'http://121.196.145.103:31111/orderfood/';
   public baseImgUploadUrl = 'http://121.196.145.103:32101';
   constructor() {
@@ -14,7 +14,7 @@ export class LocalStorageService {
       throw new Error('Current browser does not support Local Storage');
     }
     this.localStorage = localStorage;
-    this.set(this.baseUrl, 'http://localhost:32113');
+    this.set(this.baseUrl, 'http://121.196.145.103:32102');
     this.set(this.baseImgUrl, 'http://121.196.145.103:31111/orderfood/');
     this.set(this.baseImgUploadUrl, 'http://121.196.145.103:32101');
   }

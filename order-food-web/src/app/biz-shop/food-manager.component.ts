@@ -35,7 +35,7 @@ export class FoodManagerComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private shopDataService: ShopDataService,
+    private shopData: ShopDataService,
     private message: NzMessageService,
     private model: NzModalService,
     private storageSession: SessionStorageService,
@@ -180,7 +180,7 @@ export class FoodManagerComponent implements OnInit {
     }
     this.data = [];
     this.dataLoading = true;
-    this.shopDataService.getFoodList(field1, minPrice, maxPrice, field3, field4, (data) => {
+    this.shopData.getFoodList(field1, minPrice, maxPrice, field3, field4, (data) => {
       console.log(data);
       if (data.success) {
         this.data = data.data.content;
@@ -228,7 +228,7 @@ export class FoodManagerComponent implements OnInit {
     this.selectedFood.remarks = remarks;
     this.selectedFood.shopId = userId;
 
-    this.shopDataService.addFood(this.selectedFood, (data) => {
+    this.shopData.addFood(this.selectedFood, (data) => {
       if (data.success) {
         this.closeAdd();
         this.message.success('添加成功');
@@ -245,7 +245,7 @@ export class FoodManagerComponent implements OnInit {
     } else {
       msg = '上架成功';
     }
-    this.shopDataService.foodActive(id, status, (data) => {
+    this.shopData.foodActive(id, status, (data) => {
       if (data.success) {
         this.getList();
         this.message.success(msg);
@@ -258,7 +258,7 @@ export class FoodManagerComponent implements OnInit {
       nzTitle: '确认',
       nzContent: `是否删除${name}?`,
       nzOnOk: () => {
-        this.shopDataService.foodDelete(id, (data) => {
+        this.shopData.foodDelete(id, (data) => {
           if (data.success) {
             this.getList();
             this.message.success('删除成功');

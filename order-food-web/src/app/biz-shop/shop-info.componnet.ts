@@ -37,7 +37,7 @@ export class ShopInfoComponent implements OnInit {
     private storageSession: SessionStorageService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private shopDataService: ShopDataService,
+    private shopData: ShopDataService,
     private message: NzMessageService,
     private storage: LocalStorageService,
     private myTools: MyToolsService
@@ -97,7 +97,7 @@ export class ShopInfoComponent implements OnInit {
 
   save() {
     this.userData.sex = this.userSex;
-    this.shopDataService.editUser(this.userData).subscribe(res => {
+    this.shopData.editUser(this.userData).subscribe(res => {
       const data = JSON.parse(JSON.stringify(res));
       if (data.success) {
         this.message.success('修改成功');

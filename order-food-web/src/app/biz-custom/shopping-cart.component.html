@@ -1,42 +1,45 @@
-<span  class="cart" (click)="toggle()">
+<span class="cart" (click)="toggle()">
   <i class="anticon anticon-bars"></i>
 </span>
 <div class="myguest" [@signal]="signal">
   <h3 class="foodtitle" style="text-align: center">购物车</h3>
- <div class="shopping-cart" *ngIf="this.service.guest.length>0"><p><span>商品总价：{{this.service.total}}</span></p>
-    <button class="price-from-button" (click)=(submit()) nz-button [nzType]="'primary'">提交订单</button></div>
+  <div class="shopping-cart" *ngIf="this.service.guest.length > 0">
+    <p><span>商品总价：{{this.service.total}}</span></p>
+    <button class="price-from-button" (click)=(submit()) nz-button [nzType]="'primary'">提交订单</button>
+  </div>
   <ul class="guest-list">
-      <li *ngFor="let item of this.service.guest" class="clearfix">
-        <div class="guestPic"><img [src]="baseImgUrl +item.picture" alt=""></div>
-          <div><span>名称：</span>{{item.foodName}}</div>
-          <div><span>单价：</span>{{item.discountPrice}}</div>
-          <div><span>数量：{{item.count}}</span>
-            <p>
-              <button nz-button nzType="default" (click)="inc(item)">+</button>
-              <nz-input-number style="text-align: center"  [nzDisabled]="true" class="countbox" nz-input nz-SIze="default" [(ngModel)]="item.count"></nz-input-number>
-              <button nz-button nzType="default" (click)="dec(item)">-</button>
-            </p>
-          </div>
-          <div><span>总价：</span>{{item.count*item.discountPrice}}</div>
-      </li>
+    <li *ngFor="let item of this.service.guest" class="clearfix">
+      <div class="guestPic"><img [src]="baseImgUrl +item.picture" alt=""></div>
+      <div><span>名称：</span>{{item.foodName}}</div>
+      <div><span>单价：</span>{{item.discountPrice}}</div>
+      <div><span>数量：{{item.count}}</span>
+        <p>
+          <button nz-button nzType="default" (click)="inc(item)">+</button>
+          <nz-input-number style="text-align: center" [nzDisabled]="true" class="countbox" nz-input nz-SIze="default"
+            [(ngModel)]="item.count"></nz-input-number>
+          <button nz-button nzType="default" (click)="dec(item)">-</button>
+        </p>
+      </div>
+      <div><span>总价：</span>{{item.count*item.discountPrice}}</div>
+    </li>
   </ul>
 </div>
 
-<nz-modal  [(nzVisible)]="isVisible" nzTitle="订单详情" nzWidth="60%" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
-    <h2 class="modal"><span>购物车总价：</span>{{this.service.total}}</h2>
-    <p class="text clearfix"><span>姓名：</span>{{this.userData.name}}</p>
-    <p class="text clearfix"><span>手机号：</span>{{this.userData.phone}}</p>
-    <p class="text clearfix"><span>地址：</span>{{ this.userData.address}}</p>
-    <ul class="detail">
-      <li class="clearfix" *ngFor="let item of this.service.guest" >
-        <p><span>菜品名称：</span> {{item.foodName}}</p>
-        <p><span>菜品数量：</span>{{item.count}}</p>
-        <p><span>菜品价格：</span>{{item.discountPrice}}</p>
-        <p><span>菜品总价：</span>{{item.discountPrice*item.count}}</p>
-      </li>
-    </ul>
-    <div>
-      <h3 class="bz">备注：</h3>
-      <textarea row="5"  nz-input [(ngModel)]="inputValue"  placeholder="有什么好的建议吗？"></textarea>
-    </div>
-  </nz-modal>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="订单详情" nzWidth="60%" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <h2 class="modal"><span>购物车总价：</span>{{this.service.total}}</h2>
+  <p class="text clearfix"><span>姓名：</span>{{this.userData.name}}</p>
+  <p class="text clearfix"><span>手机号：</span>{{this.userData.phone}}</p>
+  <p class="text clearfix"><span>地址：</span>{{ this.userData.address}}</p>
+  <ul class="detail">
+    <li class="clearfix" *ngFor="let item of this.service.guest">
+      <p><span>菜品名称：</span> {{item.foodName}}</p>
+      <p><span>菜品数量：</span>{{item.count}}</p>
+      <p><span>菜品价格：</span>{{item.discountPrice}}</p>
+      <p><span>菜品总价：</span>{{item.discountPrice*item.count}}</p>
+    </li>
+  </ul>
+  <div>
+    <h3 class="bz">备注：</h3>
+    <textarea row="5" nz-input [(ngModel)]="inputValue" placeholder="有什么好的建议吗？"></textarea>
+  </div>
+</nz-modal>

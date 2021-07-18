@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GusetService } from '../core/services/gusest.services';
 import { ActivatedRoute, Params } from '@angular/router';
 import { LocalStorageService } from 'app/core/services/local-storage.service';
+import { ShopDataService } from 'app/core/services/shop-data.service';
 
 @Component({
   selector: 'od-order-food-detail',
@@ -15,14 +16,15 @@ export class OrderFoodDetailComponent implements OnInit {
   data: any;
   assess: any;
   baseImgUrl: string;
+  baseUrl: string;
   foodId: string;
   List = [];
 
 
 
   constructor(
-    private http: HttpClient,
-    private service: GusetService,
+    private shopData: ShopDataService,
+    private gusetservice: GusetService,
     private storage: LocalStorageService,
     private route: ActivatedRoute
   ) {
@@ -40,19 +42,19 @@ export class OrderFoodDetailComponent implements OnInit {
       return;
     }
     let isHave = false;
-    for (let index = 0; index < this.service.guest.length; index++) {
-      const element = this.service.guest[index];
+    for (let index = 0; index < this.gusetservice.guest.length; index++) {
+      const element = this.gusetservice.guest[index];
       if (element.id === this.data.id) {
         element.count++;
         element.total = element.count * element.discountPrice;
-        this.service.total += element.discountPrice * 1;
-        this.service.guest[index] = element;
+        this.gusetservice.total += element.discountPrice * 1;
+        this.gusetservice.guest[index] = element;
         isHave = true;
         break;
       }
     }
     if (!isHave) {
-      this.service.guest.unshift({
+      this.gusetservice.guest.unshift({
         id: this.data.id,
         foodName: this.data.foodName,
         discountPrice: this.data.discountPrice,
@@ -61,56 +63,31 @@ export class OrderFoodDetailComponent implements OnInit {
         type: this.data.foodType,
         picture: this.data.picture
       });
-      this.service.total += this.data.discountPrice * 1;
-     /*  console.log(this.service.total); */
+      this.gusetservice.total += this.data.discountPrice * 1;
+     /*  console.log(this.gusetservice.total); */
     }
   }
 
 
  ngOnInit() {
-    let header: HttpHeaders;
-    header = new HttpHeaders();
-
-    header.append('Content-Type', 'application/json');
-    this.http.get('http://localhost:32113/api/v1/fooddetail/' +  this.foodId)
-    .subscribe(
-      val => {
-        const back = JSON.parse(JSON.stringify(val));
-        if (back.success) {
-          this.data = back.data;
-          this.List.push(
-            {pic: this.data.pictureSon1},
-            {pic: this.data.pictureSon2},
-            {pic: this.data.pictureSon3});
-        }
-      },
-      respone => {
-        /* console.log('失败'); */
-      },
-      () => {
-        /* console.log('完成get'); */
-      }
-    );
+   this.shopData.fooddetail(this.foodId, (res: any) => {
+    const back = JSON.parse(JSON.stringify(res));
+    if (back.success) {
+      this.data = back.data;
+      this.List.push(
+        {pic: this.data.pictureSon1},
+        {pic: this.data.pictureSon2},
+        {pic: this.data.pictureSon3});
+    }
+   });
   }
   getComments () {
-    let header: HttpHeaders;
-    header = new HttpHeaders();
-    header.append('Content-Type', 'application/json');
-    this.http.get('http://localhost:32113/api/v1/commentlist/' + this.foodId)
-    .subscribe(
-      val => {
-        const ass = JSON.parse(JSON.stringify(val));
-        if (ass.success) {
-          this.assess = ass.data;
-        }
-      },
-      respone => {
-       /*  console.log('失败'); */
-      },
-      () => {
-       /*  console.log('完成get'); */
+    this.shopData.getComments(this.foodId, (res: any) => {
+      const ass = JSON.parse(JSON.stringify(res));
+      if (ass.success) {
+        this.assess = ass.data;
       }
-    );
+    })
   }
   likeNumberToInt (item) {
     return item * 1;

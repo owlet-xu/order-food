@@ -37,7 +37,7 @@ export class MyInfoComponent implements OnInit {
     private storageSession: SessionStorageService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private shopDataService: ShopDataService,
+    private shopData: ShopDataService,
     private message: NzMessageService,
     private storage: LocalStorageService,
     private myTools: MyToolsService
@@ -48,7 +48,6 @@ export class MyInfoComponent implements OnInit {
 
     this.userData = this.storageSession.getObject(this.storageSession.userData);
     this.imgUploadUrl = this.storage.get(this.storage.baseImgUploadUrl);
-    console.log('=-------' + this.imgUploadUrl);
   }
 
   ngOnInit() {
@@ -111,7 +110,7 @@ export class MyInfoComponent implements OnInit {
 
   save() {
     this.userData.sex = this.userSex;
-    this.shopDataService.editUser(this.userData).subscribe(res => {
+    this.shopData.editUser(this.userData).subscribe(res => {
       const data = JSON.parse(JSON.stringify(res));
       if (data.success) {
         this.message.success('修改成功');

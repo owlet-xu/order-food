@@ -172,4 +172,102 @@ export class ShopDataService {
     header.append('Content-Type', 'application/json');
     return this.http.get(this.storage.get(this.storage.baseUrl) + '/api/v1/countToday');
   }
+
+  fooddetail(foodId: string, back) {
+    let header: HttpHeaders;
+    header = new HttpHeaders();
+    header.append('Content-Type', 'application/json');
+    const url = `${this.storage.get(this.storage.baseUrl)}/api/v1/fooddetail/${foodId}`;
+    this.http.get(url).subscribe(
+      val => {
+        back(val);
+      },
+      respone => {
+        /* console.log('失败'); */
+      },
+      () => {
+        /* console.log('完成get'); */
+      }
+    );
+  }
+
+  getComments(foodId: string, back: any) {
+    let header: HttpHeaders;
+    header = new HttpHeaders();
+    header.append('Content-Type', 'application/json');
+    const url = `${this.storage.get(this.storage.baseUrl)}/api/v1/commentlist/${foodId}`;
+    this.http.get(url).subscribe(
+      val => {
+        back(val);
+      },
+      respone => {
+        /*  console.log('失败'); */
+      },
+      () => {
+        /*  console.log('完成get'); */
+      }
+    );
+  }
+
+  createOrderInfo(orderId: any, orderAddress: any, orderName: any, orderPhone: any, totalPrice, orderRemark: any, type: any, orderMeanListInfoList: any, back: any) {
+    let header: HttpHeaders;
+    header = new HttpHeaders();
+    header.append('Content-Type', 'application/json');
+    const url = `${this.storage.get(this.storage.baseUrl)}/api/v1/createOrderInfo`;
+    this.http.post(
+      url,
+      {
+        'orderId': orderId,
+        'orderAddress': orderAddress,
+        'orderName': orderName,
+        'orderPhone': orderPhone,
+        'totalPrice': totalPrice,
+        'orderRemark': orderRemark,
+        'type': type,
+        'orderMeanListInfoList': orderMeanListInfoList
+      },
+      { headers: header }
+    )
+      .subscribe(
+        val => {
+          back(val);
+        },
+        respone => {
+          /*  console.log('失败'); */
+        },
+        () => {
+          /*  console.log('完成post'); */
+        }
+      );
+  }
+
+  searchgaijiaofan(foodType: number, userType: any, back: any) {
+    let header: HttpHeaders;
+    header = new HttpHeaders();
+    header.append('Content-Type', 'application/json');
+    const url = `${this.storage.get(this.storage.baseUrl)}/api/v1/searchgaijiaofan`;
+    this.http.post(
+      url,
+      {
+        foodType: foodType,
+        maxPrice: 0,
+        minPrice: 0,
+        paSize: 0,
+        pageNum: 0,
+        userType: userType
+      },
+      { headers: header }
+    )
+      .subscribe(
+        val => {
+          back(val);
+        },
+        respone => {
+          /*  console.log('失败'); */
+        },
+        () => {
+          /* console.log('完成post'); */
+        }
+      );
+  }
 }

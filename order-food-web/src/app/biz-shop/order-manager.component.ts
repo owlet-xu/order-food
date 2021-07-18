@@ -35,7 +35,7 @@ export class OrderManagerComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: NzModalService,
     private message: NzMessageService,
-    private shopDataService: ShopDataService,
+    private shopData: ShopDataService,
     private storageSession: SessionStorageService,
     private myTools: MyToolsService
     ) {}
@@ -76,7 +76,7 @@ export class OrderManagerComponent implements OnInit {
       endTime = this.myTools.DateFormate(field6, 'yyyy-MM-dd hh:mm:ss');
     }
     const userData = this.storageSession.getObject(this.storageSession.userData);
-    this.shopDataService.getMyOrders(field1, field2, field3, field4, startTime, endTime, this.pageSize, this.pageIndex,
+    this.shopData.getMyOrders(field1, field2, field3, field4, startTime, endTime, this.pageSize, this.pageIndex,
       userData.id, userData.type).subscribe(res => {
       const data = JSON.parse(JSON.stringify(res));
       if (data.success) {
@@ -97,7 +97,7 @@ export class OrderManagerComponent implements OnInit {
   }
   deleteConfirmDo(isOk: boolean) {
     if (isOk) {
-      this.shopDataService.refuseOrder(this.orderId, this.deleteReason, '').subscribe(res => {
+      this.shopData.refuseOrder(this.orderId, this.deleteReason, '').subscribe(res => {
         const data = JSON.parse(JSON.stringify(res));
         if (data.success) {
           this.loadData();
@@ -109,7 +109,7 @@ export class OrderManagerComponent implements OnInit {
   }
   // 接单
   showAddConfirm (id: string, num: string) {
-    this.shopDataService.recieveOrder(id, '').subscribe(res => {
+    this.shopData.recieveOrder(id, '').subscribe(res => {
       const data = JSON.parse(JSON.stringify(res));
       if (data.success) {
         this.message.create('success', `订单${num}接单成功`);

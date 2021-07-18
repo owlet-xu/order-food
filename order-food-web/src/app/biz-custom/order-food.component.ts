@@ -1,9 +1,9 @@
 import { Component, Output, OnInit, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GusetService } from '../core/services/gusest.services';
 import { LocalStorageService } from 'app/core/services/local-storage.service';
 import { SessionStorageService } from 'app/core/services/session-storage.service';
+import { ShopDataService } from 'app/core/services/shop-data.service';
 
 @Component({
   selector: 'od-order-food',
@@ -11,7 +11,7 @@ import { SessionStorageService } from 'app/core/services/session-storage.service
   styleUrls: ['./order-food.component.scss'],
 })
 
- export class OrderFoodComponent implements AfterViewInit {
+export class OrderFoodComponent implements AfterViewInit {
   testSwiper: Swiper;
   signal: string;
   data: any;
@@ -32,6 +32,15 @@ import { SessionStorageService } from 'app/core/services/session-storage.service
   List = [];
   isVisible = false;
 
+  constructor(
+    public gusetS: GusetService,
+    private router: Router,
+    private shopData: ShopDataService,
+    private storage: LocalStorageService,
+    private storageSession: SessionStorageService
+  ) {
+    this.baseImgUrl = this.storage.get(this.storage.baseImgUrl);
+  }
 
 
 
@@ -39,41 +48,30 @@ import { SessionStorageService } from 'app/core/services/session-storage.service
   @Output() event = new EventEmitter();*/
 
   add(item): void {
-   /*  console.log(this.service.guest); */
     let isHave = false;
-    for (let index = 0; index < this.service.guest.length; index++) {
-      const element = this.service.guest[index];
+    for (let index = 0; index < this.gusetS.guest.length; index++) {
+      const element = this.gusetS.guest[index];
       if (element.id === item.id) {
         element.count++;
         element.total = element.count * element.discountPrice;
-        this.service.total += element.discountPrice * 1;
-        this.service.guest[index] = element;
+        this.gusetS.total += element.discountPrice * 1;
+        this.gusetS.guest[index] = element;
         isHave = true;
         break;
       }
     }
     if (!isHave) {
-      this.service.guest.unshift({
+      this.gusetS.guest.unshift({
         id: item.id,
         foodName: item.foodName,
-        discountPrice: item.discountPrice ,
+        discountPrice: item.discountPrice,
         count: 1,
         total: item.discountPrice,
         type: item.foodType,
         picture: item.picture
       });
-      this.service.total += item.discountPrice * 1;
+      this.gusetS.total += item.discountPrice * 1;
     }
-  }
-
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private service: GusetService,
-    private storage: LocalStorageService,
-    private storageSession: SessionStorageService
-  ) {
-    this.baseImgUrl = this.storage.get(this.storage.baseImgUrl);
   }
 
   ngAfterViewInit() {
@@ -121,142 +119,51 @@ import { SessionStorageService } from 'app/core/services/session-storage.service
         {pic: '../../../assets/images/images2.jpg'},
         {pic: '../../../assets/images/images3.jpg'}]} ,
     ]; */
-
-    let header: HttpHeaders;
-    header = new HttpHeaders();
     const userData = this.storageSession.getObject(this.storageSession.userData);
-    header.append('Content-Type', 'application/json');
-    this.http.post(
-        'http://localhost:32113/api/v1/searchgaijiaofan',
-        {
-          foodType: 0,
-          maxPrice: 0,
-          minPrice: 0,
-          paSize: 0,
-          pageNum: 0,
-          userType: userData.type
-        },
-        { headers: header }
-      )
-      .subscribe(
-        val => {
-          this.data = JSON.parse(JSON.stringify(val)).data.content;
-         /*  console.log( JSON.parse(JSON.stringify(val))); */
-          this.List.push(
-            {id: this.data[0].id , pic: this.data[0].picture , foodName: this.data[0].foodName}
-          );
-        },
-        respone => {
-         /*  console.log('失败'); */
-        },
-        () => {
-          /* console.log('完成post'); */
-        }
+    this.shopData.searchgaijiaofan(0, userData.type, (res) => {
+      this.data = JSON.parse(JSON.stringify(res)).data.content;
+      this.List.push(
+        { id: this.data[0].id, pic: this.data[0].picture, foodName: this.data[0].foodName }
       );
+    });
 
-      this.http.post(
-        'http://localhost:32113/api/v1/searchgaijiaofan',
-        {
-          foodType: 1,
-          maxPrice: 0,
-          minPrice: 0,
-          paSize: 0,
-          pageNum: 0,
-          userType: userData.type
-        },
-        { headers: header }
-      )
-      .subscribe(
-        val => {
-          this.data2 = JSON.parse(JSON.stringify(val)).data.content;
-          /* console.log( JSON.parse(JSON.stringify(val))); */
-          this.List.push(
-            {id: this.data2[0].id , pic: this.data2[0].picture , foodName: this.data2[0].foodName}
-          );
-        },
-        respone => {
-         /*  console.log('失败'); */
-        },
-        () => {
-          /* console.log('完成post'); */
-        }
+    this.shopData.searchgaijiaofan(1, userData.type, (res) => {
+      this.data2 = JSON.parse(JSON.stringify(res)).data.content;
+      this.List.push(
+        { id: this.data2[0].id, pic: this.data2[0].picture, foodName: this.data2[0].foodName }
       );
-
-      this.http.post(
-        'http://localhost:32113/api/v1/searchgaijiaofan',
-        {
-          foodType: 2,
-          maxPrice: 0,
-          minPrice: 0,
-          paSize: 0,
-          pageNum: 0,
-          userType: userData.type
-        },
-        { headers: header }
-      )
-      .subscribe(
-        val => {
-          this.data3 = JSON.parse(JSON.stringify(val)).data.content;
-          /* console.log( JSON.parse(JSON.stringify(val))); */
-          this.List.push(
-            {id: this.data3[0].id , pic: this.data3[0].picture , foodName: this.data3[0].foodName}
-          );
-        },
-        respone => {
-         /*  console.log('失败'); */
-        },
-        () => {
-        /*   console.log('完成post'); */
-        }
+    });
+    this.shopData.searchgaijiaofan(2, userData.type, (res) => {
+      this.data3 = JSON.parse(JSON.stringify(res)).data.content;
+      this.List.push(
+        { id: this.data3[0].id, pic: this.data3[0].picture, foodName: this.data3[0].foodName }
       );
+    });
 
-      this.http.post(
-        'http://localhost:32113/api/v1/searchgaijiaofan',
-        {
-          foodType: 3,
-          maxPrice: 0,
-          minPrice: 0,
-          paSize: 0,
-          pageNum: 0,
-          userType: userData.type
-        },
-        { headers: header }
-      )
-      .subscribe(
-        val => {
-          this.data4 = JSON.parse(JSON.stringify(val)).data.content;
-          /* console.log( JSON.parse(JSON.stringify(val))); */
-          this.List.push(
-            {id: this.data4[0].id , pic: this.data4[0].picture , foodName: this.data4[0].foodName}
-          );
-        },
-        respone => {
-         /*  console.log('失败'); */
-        },
-        () => {
-         /*  console.log('完成post'); */
-        }
+    this.shopData.searchgaijiaofan(3, userData.type, (res) => {
+      this.data4 = JSON.parse(JSON.stringify(res)).data.content;
+      this.List.push(
+        { id: this.data4[0].id, pic: this.data4[0].picture, foodName: this.data4[0].foodName }
       );
+    });
 
-
-
-      this.testSwiper = new Swiper('.swiper-container', {
-        direction: 'horizontal',
-        autoplay: {
-          delay: 3000,
-          stopOnLastSlide: false,
-        },
-        speed: 1000,
-        observer: true,
-        observeParents: true,
-        pagination: {
-          el: '.swiper-pagination',
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        }
-      });
+    this.testSwiper = new Swiper('.swiper-container', {
+      direction: 'horizontal',
+      autoplay: {
+        delay: 3000,
+        stopOnLastSlide: false,
+      },
+      speed: 1000,
+      observer: true,
+      observeParents: true,
+      pagination: {
+        el: '.swiper-pagination',
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }
+    });
 
   }
 
