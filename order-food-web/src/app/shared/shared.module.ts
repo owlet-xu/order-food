@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { ODataModule } from '@gsafety/owlet-odata';
+import { ODataModule } from '@owlet/owlet-odata';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 @NgModule({

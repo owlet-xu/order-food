@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ConfigService } from '@gsafety/owlet-config';
+import { ConfigService } from '@owlet/owlet-config';
 import { concatMap } from 'rxjs/operators';
 import { registerLocaleData } from '@angular/common';
 import ng_zh from '@angular/common/locales/zh';

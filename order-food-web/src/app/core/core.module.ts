@@ -2,7 +2,7 @@ import { NgModule, Optional, SkipSelf, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { OwletConfigModule, ConfigLoader, ConfigHttpLoader } from '@gsafety/owlet-config';
+import { OwletConfigModule, ConfigLoader, ConfigHttpLoader } from '@owlet/owlet-config';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 
 import { LoggerFactory } from './services/logger-factory';
